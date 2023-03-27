@@ -1,9 +1,15 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { User, UserModel } from './schemas/users.schema';
 
 @Injectable()
 export class UsersService {
+    constructor(@InjectModel(User.name) private userModel: Model<UserModel>) {}
+
+
     private users = [
         {
             "name": "Emil",
@@ -23,9 +29,11 @@ export class UsersService {
     ]
 
 
-    create(createUserDto: CreateUserDto) {
-        this.users.push({name: createUserDto.name, age: createUserDto.age, id: this.users.length });
-        return `${createUserDto.name} is now added ! and age is of type ${typeof(createUserDto.age)}.`;
+    async create(createUserDto: CreateUserDto): Promise<User> {
+        // this.users.push({name: createUserDto.name, age: createUserDto.age, id: this.users.length });
+        // return `${createUserDto.name} is now added ! and age is of type ${typeof(createUserDto.age)}.`;
+        const user = new this.userModel(createUserDto);
+        return user.save();
     }
 
   
@@ -34,12 +42,13 @@ export class UsersService {
     }
 
 
-    get() {
-        let result = ``;
-        this.users.forEach(u => {
-            result += `${u.name} under the id ${u.id} is of age ${u.age}\n`
-        });
-        return result;
+    async get() {
+        // let result = ``;
+        // this.users.forEach(u => {
+        //     result += `${u.name} under the id ${u.id} is of age ${u.age}\n`
+        // });
+        // return result;
+        return this.userModel.findOne({ name: "Arsen" }).exec();
     }
 
 
