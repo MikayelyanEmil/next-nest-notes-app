@@ -11,7 +11,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 @Module({
   imports: [
     UsersModule, 
-    MongooseModule.forRoot(`mongodb+srv://emil:dfgsap@cluster-for-nestjs.a6khylg.mongodb.net/?retryWrites=true&w=majority`)
+    // MongooseModule.forRoot(`mongodb+srv://emil:dfgsap@cluster-for-nestjs.a6khylg.mongodb.net/?retryWrites=true&w=majority`)
+    MongooseModule.forRoot(`mongodb+srv://emil:dfgsap@cluster-for-nestjs.a6khylg.mongodb.net/test`)
+    
   ],
   controllers: [AppController],
   providers: [AppService],
