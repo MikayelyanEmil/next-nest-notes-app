@@ -1,17 +1,30 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Redirect } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Redirect, Res, Request, UseGuards } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersService } from './users.service';
+import { Response } from 'express';
+import { AuthGuard } from '@nestjs/passport';
 
 
 
 @Controller('users')
 export class UsersController {
-    constructor(private readonly usersService: UsersService) {}
+    constructor(private readonly usersService: UsersService) { }
 
-    @Post('new')
-    create(@Body() createUserDto: CreateUserDto) {
-        return this.usersService.create(createUserDto);
+    @UseGuards(AuthGuard('local'))
+    @Post('login') 
+    async login(@Request() req) {
+        return req.user;
+    }
+
+    @Post('signup') 
+    async create(@Body() createUserDto: CreateUserDto, @Res() res: Response) {
+        try {
+            await this.usersService.create(createUserDto); 
+            return res.redirect('http://localhost:3000');
+        } catch (error) {            
+            res.send('Could not sign you up: Invalid credentials try again.');
+        }
     }
 
     @Get(':id')
@@ -32,5 +45,12 @@ export class UsersController {
     @Delete(':id')
     remove(@Param('id') id) {
         return this.usersService.remove(id);
-    }
+    } 
+
+
+
+    // @Get('test')
+    // test() {
+    //     return this.usersService.getByEmail('mikayelyanemil19@gmail.com')
+    // }
 }

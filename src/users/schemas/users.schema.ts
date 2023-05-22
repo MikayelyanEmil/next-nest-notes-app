@@ -5,11 +5,22 @@ export type UserModel = HydratedDocument<User>;
 
 @Schema()
 export class User {
-    @Prop()
-    name: string;
+    @Prop(
+        {
+            required: true,
+            // validate: {
+            //     validator: function(email) {
+            //       const emailRegex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+            //       return emailRegex.test(email);
+            //     },
+            //     message: 'Please enter a valid email address'
+            //   }
+        }
+    )
+    email: string;
 
     @Prop()
-    age: number;
+    password: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

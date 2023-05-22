@@ -9,6 +9,7 @@ import { UsersService } from './users.service';
         { name: User.name, schema: UserSchema }
     ])],
     controllers: [UsersController],
-    providers: [UsersService]
+    providers: [UsersService],
+    exports: [UsersService]
 })
 export class UsersModule {}

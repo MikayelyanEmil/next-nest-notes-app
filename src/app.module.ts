@@ -5,14 +5,15 @@ import { UsersController } from './users/users.controller';
 import { UsersService } from './users/users.service';
 import { UsersModule } from './users/users.module';
 import { MongooseModule } from '@nestjs/mongoose';
+import { AuthModule } from './auth/auth.module';
 
 
 
 @Module({
   imports: [
     UsersModule, 
-    // MongooseModule.forRoot(`mongodb+srv://emil:dfgsap@cluster-for-nestjs.a6khylg.mongodb.net/?retryWrites=true&w=majority`)
-    MongooseModule.forRoot(`mongodb+srv://emil:dfgsap@cluster-for-nestjs.a6khylg.mongodb.net/test`)
+    AuthModule,
+    MongooseModule.forRoot(`mongodb+srv://emil:dfgsap@userscluster.wqtwqdy.mongodb.net/test`)
     
   ],
   controllers: [AppController],
