@@ -15,8 +15,8 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
             throw new UnauthorizedException();
         }
         else if (user == false) {
-            
-        }
+            throw new UnauthorizedException("Invalid Password: Please try again.")
+        } 
         else return user;
     }
 }

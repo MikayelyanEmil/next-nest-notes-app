@@ -4,25 +4,37 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersService } from './users.service';
 import { Response } from 'express';
 import { AuthGuard } from '@nestjs/passport';
+import { AuthService } from 'src/auth/auth.service';
+import { LocalAuthGuard } from 'src/auth/local-auth.guard';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 
 
 @Controller('users')
 export class UsersController {
-    constructor(private readonly usersService: UsersService) { }
+    constructor(
+        private readonly usersService: UsersService,
+        private readonly authService: AuthService
+    ) { }
 
-    @UseGuards(AuthGuard('local'))
-    @Post('login') 
+    // @UseGuards(JwtAuthGuard)
+    // @Get('tests')
+    // test(@Request() req) {
+    //     return 'Protected Route ' + req.user.email;
+    // }
+
+    @UseGuards(LocalAuthGuard)
+    @Post('login')
     async login(@Request() req) {
-        return req.user;
+        return this.authService.login(req.user);
     }
 
-    @Post('signup') 
+    @Post('signup')
     async create(@Body() createUserDto: CreateUserDto, @Res() res: Response) {
         try {
-            await this.usersService.create(createUserDto); 
+            await this.usersService.create(createUserDto);
             return res.redirect('http://localhost:3000');
-        } catch (error) {            
+        } catch (error) {
             res.send('Could not sign you up: Invalid credentials try again.');
         }
     }
@@ -45,12 +57,8 @@ export class UsersController {
     @Delete(':id')
     remove(@Param('id') id) {
         return this.usersService.remove(id);
-    } 
+    }
 
 
 
-    // @Get('test')
-    // test() {
-    //     return this.usersService.getByEmail('mikayelyanemil19@gmail.com')
-    // }
 }
