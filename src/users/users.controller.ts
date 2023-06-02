@@ -23,20 +23,18 @@ export class UsersController {
     //     return 'Protected Route ' + req.user.email;
     // }
 
+
+
     @UseGuards(LocalAuthGuard)
-    @Post('login')
+    @Post('login') 
     async login(@Request() req) {
         return this.authService.login(req.user);
     }
-
+ 
     @Post('signup')
-    async create(@Body() createUserDto: CreateUserDto, @Res() res: Response) {
-        try {
-            await this.usersService.create(createUserDto);
-            return res.redirect('http://localhost:3000');
-        } catch (error) {
-            res.send('Could not sign you up: Invalid credentials try again.');
-        }
+    async create(@Body() createUserDto: CreateUserDto) {
+        const user = await this.usersService.create(createUserDto);
+        return this.authService.login(user);
     }
 
     @Get(':id')
@@ -58,7 +56,5 @@ export class UsersController {
     remove(@Param('id') id) {
         return this.usersService.remove(id);
     }
-
-
 
 }
