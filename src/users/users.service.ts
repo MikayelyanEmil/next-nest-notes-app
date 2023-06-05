@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, ObjectId } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -13,9 +13,14 @@ export class UsersService {
     constructor(@InjectModel(User.name) private userModel: Model<UserModel>) { }
 
     async create(createUserDto: CreateUserDto): Promise<User> {
-        console.log(createUserDto);
-        const user = new this.userModel(createUserDto);
-        return user.save();
+        try {
+            let user = new this.userModel(createUserDto);
+            return await user.save();  
+        } catch (error) {
+            let errorFields = Object.keys(error.errors);
+            let message = errorFields.reduce((e1, e2) => error.errors[e1] + ', ' + error.errors[e2]);
+            throw new BadRequestException(message);
+        }
     }
 
 

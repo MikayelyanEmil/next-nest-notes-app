@@ -1,4 +1,5 @@
 export class UpdateUserDto {
-    readonly name;
-    readonly age;
+    readonly name: string;
+    readonly email: string;
+    readonly password: string;
 }

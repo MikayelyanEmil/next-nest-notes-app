@@ -32,7 +32,7 @@ export class UsersController {
     }
  
     @Post('signup')
-    async create(@Body() createUserDto: CreateUserDto) {
+    async create(@Body() createUserDto: CreateUserDto) {       
         const user = await this.usersService.create(createUserDto);
         return this.authService.login(user);
     }
