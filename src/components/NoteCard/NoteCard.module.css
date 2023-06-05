@@ -1,0 +1,17 @@
+.notecard {
+    margin: 10px 0;
+    border: 2px solid #1c0e7b;
+    border-radius: 10px;
+}
+
+.title {
+    padding: 5px;
+    border-bottom: 2px solid #1c0e7b;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    background-color: #cfd219;
+}
+
+.description {
+    padding: 5px;
+}

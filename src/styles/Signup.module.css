@@ -10,7 +10,8 @@
 }
 
 .input[type="email"],
-.input[type="password"] {
+.input[type="password"],
+.input[type="text"] {
     padding: 10px;
     margin: 5px 0;
     border: 1px solid #ccc;
