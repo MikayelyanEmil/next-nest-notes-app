@@ -1,8 +1,7 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Redirect, Res, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Redirect, Res, Request, UseGuards, Response } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersService } from './users.service';
-import { Response } from 'express';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from 'src/auth/auth.service';
 import { LocalAuthGuard } from 'src/auth/local-auth.guard';
@@ -17,13 +16,11 @@ export class UsersController {
         private readonly authService: AuthService
     ) { }
 
-    // @UseGuards(JwtAuthGuard)
-    // @Get('tests')
-    // test(@Request() req) {
-    //     return 'Protected Route ' + req.user.email;
-    // }
-
-
+    @UseGuards(JwtAuthGuard)
+    @Get('verify')
+    test(@Request() req) {
+        return req.user;
+    }
 
     @UseGuards(LocalAuthGuard)
     @Post('login') 
