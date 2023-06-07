@@ -19,7 +19,7 @@ export default function signup() {
     });
     const { access_token } = await data.json();
     document.cookie = "access_token=" + access_token;
-    router.push('/')
+    router.push('/dashboard')
   }
 
   return (
