@@ -16,9 +16,15 @@ export class UsersController {
         private readonly authService: AuthService
     ) { }
 
+    @Post('test')
+    async test(@Body() body) {
+        const user = await this.usersService.getByEmail(body.email);
+        return this.usersService._test(user, body.note);
+    }
+
     @UseGuards(JwtAuthGuard)
     @Get('verify')
-    test(@Request() req) {
+    verify(@Request() req) {
         return req.user;
     }
 

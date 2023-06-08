@@ -8,8 +8,6 @@ import { User, UserModel } from './schemas/users.schema';
 
 @Injectable()
 export class UsersService {
-
-
     constructor(@InjectModel(User.name) private userModel: Model<UserModel>) { }
 
     async create(createUserDto: CreateUserDto): Promise<User> {
@@ -48,4 +46,8 @@ export class UsersService {
         return this.userModel.findOne({ email }).exec();
     }
 
+
+    async _test(user, note) {
+        return await user.push(note).save();
+    }
 }
