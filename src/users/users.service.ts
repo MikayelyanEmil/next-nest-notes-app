@@ -3,12 +3,15 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, ObjectId } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { User, UserModel } from './schemas/users.schema';
+import { Note, NoteModel, User, UserModel } from './schemas/users.schema';
+import { CreateNoteDto } from './dto/create-note.dto';
 
 
 @Injectable()
 export class UsersService {
-    constructor(@InjectModel(User.name) private userModel: Model<UserModel>) { }
+    constructor(
+        @InjectModel(User.name) private userModel: Model<UserModel>,
+        @InjectModel(Note.name) private noteModel: Model<NoteModel>) { }
 
     async create(createUserDto: CreateUserDto): Promise<User> {
         try {
@@ -47,7 +50,17 @@ export class UsersService {
     }
 
 
-    async _test(user, note) {
-        return await user.push(note).save();
+    async _testForPopulate(createNoteDto: CreateNoteDto, email) {
+        const note = new this.noteModel(createNoteDto);
+        await note.save();
+        const user = await this.userModel.findOne({email});
+        user.notes.push(note.id);
+        await user.save();
+        console.log(user);
+        await user.populate('notes');
+        console.log(user);
+
+        console.log(note); 
+        
     }
 }

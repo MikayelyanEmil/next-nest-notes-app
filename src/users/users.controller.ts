@@ -7,7 +7,8 @@ import { AuthService } from 'src/auth/auth.service';
 import { LocalAuthGuard } from 'src/auth/local-auth.guard';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
-
+import { CreateNoteDto } from './dto/create-note.dto';
+import { UpdateNoteDto } from './dto/update-note.dto';
 
 @Controller('users')
 export class UsersController {
@@ -16,10 +17,11 @@ export class UsersController {
         private readonly authService: AuthService
     ) { }
 
+    @UseGuards(JwtAuthGuard)
     @Post('test')
-    async test(@Body() body) {
-        const user = await this.usersService.getByEmail(body.email);
-        return this.usersService._test(user, body.note);
+    async test(@Request() req, @Body() createNoteDto: CreateNoteDto) {         
+        // const user = await this.usersService.getByEmail(req.user.sub);
+        return this.usersService._testForPopulate(createNoteDto, req.user.sub);
     }
 
     @UseGuards(JwtAuthGuard)

@@ -2,6 +2,7 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import mongoose, { HydratedDocument } from "mongoose";
 
 export type UserModel = HydratedDocument<User>;
+export type NoteModel = HydratedDocument<Note>;
 
 @Schema()
 export class Note {
@@ -10,6 +11,9 @@ export class Note {
 
     @Prop()
     description: string;
+
+    // @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User'})
+    // user: mongoose.Schema.Types.ObjectId;
 }
 
 @Schema()
@@ -51,3 +55,4 @@ export class User {
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
+export const NoteSchema = SchemaFactory.createForClass(Note);
