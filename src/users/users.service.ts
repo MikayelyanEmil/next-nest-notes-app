@@ -1,3 +1,4 @@
+import * as bcrypt from 'bcrypt';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, ObjectId } from 'mongoose';
@@ -7,6 +8,9 @@ import { Note, NoteModel, User, UserModel } from './schemas/users.schema';
 import { CreateNoteDto } from './dto/create-note.dto';
 
 
+
+
+
 @Injectable()
 export class UsersService {
     constructor(
@@ -14,13 +18,16 @@ export class UsersService {
         @InjectModel(Note.name) private noteModel: Model<NoteModel>) { }
 
     async create(createUserDto: CreateUserDto): Promise<User> {
+        const { name, email, password } = createUserDto;  
         try {
-            let user = new this.userModel(createUserDto);
-            return await user.save();  
+            const hash = await bcrypt.hash(password, 10);
+            let user = new this.userModel({ ...createUserDto, password: hash });
+            return await user.save();
         } catch (error) {
-            let errorFields = Object.keys(error.errors);
-            let message = errorFields.reduce((e1, e2) => error.errors[e1] + ', ' + error.errors[e2]);
-            throw new BadRequestException(message);
+            if (error.code === 11000) throw new BadRequestException('Account with that email already exists');            
+            // let errorFields = Object.keys(error.errors);
+            // let message = errorFields.reduce((e1, e2) => error.errors[e1].message + ', ' + error.errors[e2].message);
+            // throw new BadRequestException(message);
         }
     }
 
@@ -53,14 +60,14 @@ export class UsersService {
     async _testForPopulate(createNoteDto: CreateNoteDto, email) {
         const note = new this.noteModel(createNoteDto);
         await note.save();
-        const user = await this.userModel.findOne({email});
+        const user = await this.userModel.findOne({ email });
         user.notes.push(note.id);
         await user.save();
         console.log(user);
         await user.populate('notes');
         console.log(user);
 
-        console.log(note); 
-        
+        console.log(note);
+
     }
 }

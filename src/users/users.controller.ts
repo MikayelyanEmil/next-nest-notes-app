@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Redirect, Res, Request, UseGuards, Response } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Redirect, Res, Request, UseGuards, Response, BadRequestException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersService } from './users.service';
@@ -37,7 +37,11 @@ export class UsersController {
     }
  
     @Post('signup')
-    async create(@Body() createUserDto: CreateUserDto) {       
+    async create(@Body() createUserDto: CreateUserDto) { 
+        let errorMessages = [];
+        if (!/^(?!$)([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/.test(createUserDto.email)) errorMessages.push('Please enter a valid email address');
+        if (!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(createUserDto.password)) errorMessages.push('Password must be at least 8 chars long and contain at least one number and one letter');
+        if (errorMessages.length) throw new BadRequestException(errorMessages.join(', '));
         const user = await this.usersService.create(createUserDto);
         return this.authService.login(user);
     }
