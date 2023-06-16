@@ -13,21 +13,23 @@ import { CreateNoteDto } from './dto/create-note.dto';
 
 @Injectable()
 export class UsersService {
-    constructor(
+    constructor (
         @InjectModel(User.name) private userModel: Model<UserModel>,
-        @InjectModel(Note.name) private noteModel: Model<NoteModel>) { }
+    ) { }
 
     async create(createUserDto: CreateUserDto): Promise<User> {
-        const { name, email, password } = createUserDto;  
+        const { email, password } = createUserDto; 
+        let errorMessages = [];
+        if (!/^(?!$)([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/.test(email)) errorMessages.push('Please enter a valid email address');
+        if (!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(password)) errorMessages.push('Password must be at least 8 chars long and contain at least one number and one letter');
+        if (errorMessages.length) throw new BadRequestException(errorMessages.join(', '));
+ 
         try {
             const hash = await bcrypt.hash(password, 10);
             let user = new this.userModel({ ...createUserDto, password: hash });
             return await user.save();
         } catch (error) {
             if (error.code === 11000) throw new BadRequestException('Account with that email already exists');            
-            // let errorFields = Object.keys(error.errors);
-            // let message = errorFields.reduce((e1, e2) => error.errors[e1].message + ', ' + error.errors[e2].message);
-            // throw new BadRequestException(message);
         }
     }
 
@@ -57,17 +59,17 @@ export class UsersService {
     }
 
 
-    async _testForPopulate(createNoteDto: CreateNoteDto, email) {
-        const note = new this.noteModel(createNoteDto);
-        await note.save();
-        const user = await this.userModel.findOne({ email });
-        user.notes.push(note.id);
-        await user.save();
-        console.log(user);
-        await user.populate('notes');
-        console.log(user);
+    // async _testForPopulate(createNoteDto: CreateNoteDto, email) {
+        // const note = new this.noteModel(createNoteDto);
+        // await note.save();
+        // const user = await this.userModel.findOne({ email });
+        // user.notes.push(note.id);
+        // await user.save();
+        // console.log(user);
+        // await user.populate('notes');
+        // console.log(user);
 
-        console.log(note);
+        // console.log(note);
 
-    }
+    // }
 }

@@ -17,12 +17,11 @@ export class UsersController {
         private readonly authService: AuthService
     ) { }
 
-    @UseGuards(JwtAuthGuard)
-    @Post('test')
-    async test(@Request() req, @Body() createNoteDto: CreateNoteDto) {         
-        // const user = await this.usersService.getByEmail(req.user.sub);
-        return this.usersService._testForPopulate(createNoteDto, req.user.sub);
-    }
+    // @UseGuards(JwtAuthGuard)
+    // @Post('test')
+    // async test(@Request() req, @Body() createNoteDto: CreateNoteDto) {         
+    //     return this.usersService._testForPopulate(createNoteDto, req.user.sub);
+    // }
 
     @UseGuards(JwtAuthGuard)
     @Get('verify')
@@ -38,10 +37,6 @@ export class UsersController {
  
     @Post('signup')
     async create(@Body() createUserDto: CreateUserDto) { 
-        let errorMessages = [];
-        if (!/^(?!$)([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/.test(createUserDto.email)) errorMessages.push('Please enter a valid email address');
-        if (!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(createUserDto.password)) errorMessages.push('Password must be at least 8 chars long and contain at least one number and one letter');
-        if (errorMessages.length) throw new BadRequestException(errorMessages.join(', '));
         const user = await this.usersService.create(createUserDto);
         return this.authService.login(user);
     }
