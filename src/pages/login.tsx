@@ -29,7 +29,7 @@ export default function login() {
             <AppInput text={'Email'} type={'email'} name={'email'} />
             <br />
             <AppInput text={'Password'} type={'password'} name={'password'} />
-            <AppButton type='submit' text='Log in' variant='secondary' />
+            <center><AppButton type='submit' text='Log in' variant='secondary' color='#1c0e7b;' /></center>
         </form>
 
     )

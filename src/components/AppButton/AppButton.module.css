@@ -10,13 +10,13 @@
 
 
 .appButtonPrimary {
-    background-color: #1c0e7b;
+    /* background-color: #1c0e7b; */
     color: #fff;
     border: none;
 }
 
 .appButtonSecondary {
     background-color: #fff;
-    color: #1c0e7b;
-    border: 1px solid #1c0e7b;
+    /* color: #1c0e7b; */
+    border: 1px solid 
 }

@@ -5,13 +5,18 @@ interface IAppButton {
   text: string,
   variant: 'primary' | 'secondary',
   onClick?: () => void,
-  type?: 'submit'
+  type?: 'submit',
+  color?: string
 }
 
 
-export const AppButton: React.FC<IAppButton> = ({ text, variant, onClick, type }) => {
+export const AppButton: React.FC<IAppButton> = ({ text, variant, onClick, type, color }) => {
   return (
-    <button onClick={onClick} className={variant === 'primary' ? styles.appButtonPrimary : styles.appButtonSecondary}>
+    <button 
+      onClick={onClick} 
+      className={variant === 'primary' ? styles.appButtonPrimary : styles.appButtonSecondary}
+      style={variant === 'primary' ? {backgroundColor: color} : {color: color, borderColor: color}}  
+    >
       {text}
     </button>
   )

@@ -1,0 +1,14 @@
+.navbar {
+    background-color: #1c0e7b;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.link {
+    display: inline-block;
+    background-color: aliceblue;
+    border-radius: 10px;
+    padding: 10px;
+    padding-top: 10px;
+    margin: 20px 10px;
+}
