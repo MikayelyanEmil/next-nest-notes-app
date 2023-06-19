@@ -1,8 +1,8 @@
 import Head from 'next/head'
 import styles from '@/styles/Dashboard.module.css'
-import { AppButton } from '../components/AppButton/AppButton'
+import { AppButton } from '../components/Button/Button'
 import NoteCard from '@/components/NoteCard/NoteCard'
-import { AppInput } from '@/components/AppInput/AppInput'
+import { AppInput } from '@/components/Input/Input'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 

@@ -1,7 +1,7 @@
-import { AppInput } from '@/components/AppInput/AppInput';
+import { AppInput } from '@/components/Input/Input';
 import styles from '../styles/Signup.module.css'
 import { useRouter } from 'next/router';
-import { AppButton } from '@/components/AppButton/AppButton';
+import { AppButton } from '@/components/Button/Button';
 
 
 export default function signup() {
@@ -27,16 +27,11 @@ export default function signup() {
   return (
     <form onSubmit={(e) => submit(e)} className={styles.form} method='Post'>
       <AppInput text={'Name'} type={'text'} name={'name'} />
+      <br />
       <AppInput text={'Email'} type={'email'} name={'email'} />
+      <br />
       <AppInput text={'Password'} type={'password'} name={'password'} />
-      <center><AppButton type='submit' text='Sign Up' variant='secondary' color='#4CAF50' /></center>
-      {/* <label htmlFor="name" className={styles.label}>Name</label>
-      <input type="text" name='name' className={styles.input} required />
-      <label htmlFor="email" className={styles.label}>Email</label>
-      <input type="email" name='email' className={styles.input} required />
-      <label htmlFor="password" className={styles.label}>Password</label>
-      <input type="password" name='password' className={styles.input} required />
-      <button type='submit' className={styles.button}>Create Account</button> */}
+      <center><AppButton type='submit' text='Create Account' variant='primary' color='#1c0e7b' /></center>
     </form>
   )
 }

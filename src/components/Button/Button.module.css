@@ -3,20 +3,20 @@
  {
     padding: 10px;
     margin-top: 20px;
-    border-radius: 4px;
+    border-radius: 10px;
     font-size: 18px;
     cursor: pointer;
 }
 
 
 .appButtonPrimary {
-    /* background-color: #1c0e7b; */
+    background-color: #1c0e7b;
     color: #fff;
     border: none;
 }
 
 .appButtonSecondary {
     background-color: #fff;
-    /* color: #1c0e7b; */
-    border: 1px solid 
+    color: #1c0e7b;
+    border: 2px solid; 
 }

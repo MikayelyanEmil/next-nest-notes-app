@@ -1,5 +1,5 @@
-import { AppButton } from '@/components/AppButton/AppButton'
-import { AppInput } from '@/components/AppInput/AppInput'
+import { AppButton } from '@/components/Button/Button'
+import { AppInput } from '@/components/Input/Input'
 import { useRouter } from 'next/router'
 import React from 'react'
 import styles from '../styles/Login.module.css'
@@ -29,7 +29,7 @@ export default function login() {
             <AppInput text={'Email'} type={'email'} name={'email'} />
             <br />
             <AppInput text={'Password'} type={'password'} name={'password'} />
-            <center><AppButton type='submit' text='Log in' variant='secondary' color='#1c0e7b;' /></center>
+            <center><AppButton type='submit' text='Log in' variant='primary' color='#1c0e7b;' /></center>
         </form>
 
     )

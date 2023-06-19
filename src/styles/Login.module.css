@@ -1,11 +1,9 @@
 .form {
-    background-color: #1c0e7b;
-    border-radius: 20px;
-    padding: 10px;
+    border-radius: 10px; 
+    border: solid 2px #ccc;
+    padding: 30px;
     margin-top: 100px;
 }
 
-.form label {
-    color: white;
-}
+
  

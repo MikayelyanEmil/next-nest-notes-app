@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from './AppButton.module.css'
+import styles from './Button.module.css'
 
 interface IAppButton {
   text: string,
