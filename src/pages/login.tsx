@@ -20,7 +20,7 @@ export default function login() {
         });
         const { access_token } = await data.json();
         document.cookie = "access_token=" + access_token;
-        router.push('/dashboard')
+        router.push('/')
     }
 
 
