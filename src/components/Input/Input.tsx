@@ -1,14 +1,14 @@
 import React from 'react'
 import styles from './Input.module.css'
 
-interface IAppInput {
+interface IInput {
     text: string,
     type: string,
     name: string,
     color?: string
 }
 
-export const AppInput: React.FC<IAppInput> = ({ text, type, name, color }) => {
+export const Input: React.FC<IInput> = ({ text, type, name, color }) => {
     return (
         <>
             <div className={styles.wrapper}>

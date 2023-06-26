@@ -1,11 +1,11 @@
 import Head from 'next/head'
 import styles from '@/styles/Home.module.css'
-import { AppButton } from '../components/Button/Button'
+import { Button } from '../components/Button/Button'
 import { NoteCard } from '@/components/NoteCard/NoteCard'
-import { AppInput } from '@/components/Input/Input'
+import { Input } from '@/components/Input/Input'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { ok } from 'assert'
+import { submit } from '@/handlers/login'
 
 export default function Home() {
     let [body, setBody] = useState([]);
@@ -31,7 +31,7 @@ export default function Home() {
                 const notes = await response.json();
                 setAuthorized(true);
                 setBody(notes);
-            } catch (error) {                
+            } catch (error) {
                 setBody(<h1>Internal Server Error: 500</h1>);
             }
         }
@@ -58,23 +58,19 @@ export default function Home() {
         });
         await data.json();
     }
-    
-    // let results: any = [];
-  
-    // console.log(notes[0]);
-
 
     return (
         <div className={styles.container}>
-            {!authorized || 
+            {!authorized ||
                 <>
+                    <h2>Welcome !</h2>
                     <div className={styles.seperator}>
-                        {!showForm || <AppButton text='Add New Note' variant='primary' onClick={handleNew} />}
+                        {!showForm || <Button text='Add New Note' variant='primary' onClick={handleNew} />}
                         {showForm ||
                             <form method='post' onSubmit={handleSave}>
-                                <AppInput name={'title'} text={'Title'} type={'text'} />
-                                <AppInput name={'description'} text={'Add description'} type={'text'} />
-                                <AppButton text='Save Note' variant='primary' type='submit' />
+                                <Input name={'title'} text={'Title'} type={'text'} />
+                                <Input name={'description'} text={'Add description'} type={'text'} />
+                                <Button text='Save Note' variant='primary' type='submit' />
                             </form>
                         }
                     </div>
@@ -83,7 +79,17 @@ export default function Home() {
                     </div>
                 </>
             }
-            {authorized || <>{body}</> }
+
+            {authorized ||
+                <div className={styles.seperator}>
+                    <form onSubmit={(e) => submit(e)} method='Post' className={styles.form}>
+                        <Input text={'Email'} type={'email'} name={'email'} />
+                        <br />
+                        <Input text={'Password'} type={'password'} name={'password'} />
+                        <center><Button type='submit' text='Log in' variant='primary' color='#1c0e7b;' /></center>
+                    </form>
+                </div>
+            }
         </div>
     )
 }

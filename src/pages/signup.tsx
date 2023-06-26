@@ -1,7 +1,7 @@
-import { AppInput } from '@/components/Input/Input';
+import { Input } from '@/components/Input/Input';
 import styles from '../styles/Signup.module.css'
 import { useRouter } from 'next/router';
-import { AppButton } from '@/components/Button/Button';
+import { Button } from '@/components/Button/Button';
 
 
 export default function signup() {
@@ -22,7 +22,7 @@ export default function signup() {
     if (!response.ok) {
       throw new Error('Bad request')
     }
-    
+
     const { access_token } = await response.json();
     document.cookie = "access_token=" + access_token;
     router.push('/')
@@ -30,12 +30,12 @@ export default function signup() {
 
   return (
     <form onSubmit={(e) => submit(e)} className={styles.form} method='Post'>
-      <AppInput text={'Name'} type={'text'} name={'name'} />
+      <Input text={'Name'} type={'text'} name={'name'} />
       <br />
-      <AppInput text={'Email'} type={'email'} name={'email'} />
+      <Input text={'Email'} type={'email'} name={'email'} />
       <br />
-      <AppInput text={'Password'} type={'password'} name={'password'} />
-      <center><AppButton type='submit' text='Create Account' variant='primary' color='#1c0e7b' /></center>
+      <Input text={'Password'} type={'password'} name={'password'} />
+      <center><Button type='submit' text='Create Account' variant='primary' color='#1c0e7b' /></center>
     </form>
   )
 }

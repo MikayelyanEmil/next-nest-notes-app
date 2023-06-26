@@ -6,3 +6,9 @@
 .seperator {
     padding: 30px 0;
 }
+
+.form {
+    border-radius: 10px; 
+    border: solid 2px #ccc;
+    padding: 30px;
+}

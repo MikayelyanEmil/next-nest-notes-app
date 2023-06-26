@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './Button.module.css'
 
-interface IAppButton {
+interface IButton {
   text: string,
   variant: 'primary' | 'secondary',
   onClick?: () => void,
@@ -10,7 +10,7 @@ interface IAppButton {
 }
 
 
-export const AppButton: React.FC<IAppButton> = ({ text, variant, onClick, type, color }) => {
+export const Button: React.FC<IButton> = ({ text, variant, onClick, type, color }) => {
   return (
     <button 
       onClick={onClick} 
