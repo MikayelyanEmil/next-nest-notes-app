@@ -11,7 +11,7 @@ export default function signup() {
     event.preventDefault();
     const body = { name: event.target.name.value, email: event.target.email.value, password: event.target.password.value }
 
-    const data = await fetch(`http://localhost:3001/users/signup`, {
+    const response = await fetch(`http://localhost:3001/users/signup`, {
       method: 'Post',
       headers: {
         "Content-Type": "application/json",
@@ -19,7 +19,11 @@ export default function signup() {
       body: JSON.stringify(body),
       mode: 'cors'
     });
-    const { access_token } = await data.json();
+    if (!response.ok) {
+      throw new Error('Bad request')
+    }
+    
+    const { access_token } = await response.json();
     document.cookie = "access_token=" + access_token;
     router.push('/')
   }

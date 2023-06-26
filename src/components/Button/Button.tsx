@@ -19,5 +19,5 @@ export const AppButton: React.FC<IAppButton> = ({ text, variant, onClick, type, 
     >
       {text}
     </button>
-  )
-}
+  ) 
+} 
