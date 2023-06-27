@@ -7,8 +7,10 @@
     
 }
 
-.title {
-    height: 28px;
+.top {
+    display: flex;
+    align-items: center;
+    height: 40px;
     padding: 5px;
     border-bottom: 2px solid #1c0e7b;
     border-top-left-radius: 8px;
@@ -16,21 +18,37 @@
     background-color: #cfd219;
 }
 
+.title {
+    width: 88%;
+}
+
 .description {
     padding: 5px;
     height: 90px; 
 }
 
-.textarea,
+/* .textarea,
 .textareaTitle {
     overflow-y: hidden;
     width: 100%;
     height: 100%;
-    /* border: none; */
+    border: none;
     resize: none; 
     outline: none;
+    font-size: 14px;
 }
 
 .textareaTitle {
+    font-size: 18px;
     background-color: #cfd219;
+    width: 80%;
+    margin-right: 40px;
+} */
+
+.saveBtn {
+    /* background-color: #cfd219; */
+    width: 10%;
+    border-radius: 10px;
+    border: #1c0e7b solid 2px;
+    padding: 5px;
 }

@@ -68,14 +68,14 @@ export default function Home() {
                         {!showForm || <Button text='Add New Note' variant='primary' onClick={handleNew} />}
                         {showForm ||
                             <form method='post' onSubmit={handleSave}>
-                                <Input name={'title'} text={'Title'} type={'text'} />
-                                <Input name={'description'} text={'Add description'} type={'text'} />
+                                <Input name={'title'} text={'Title'} type={'text'} id='title' />
+                                <Input name={'description'} text={'Add description'} type={'text'} id='description' />
                                 <Button text='Save Note' variant='primary' type='submit' />
                             </form>
                         }
                     </div>
                     <div className={styles.seperator}>
-                        {body.map((n) => <NoteCard title={n.title} description={n.description} />)}
+                        {body.map((n) => <NoteCard title={n.title} description={n.description} id={n.id} show={setShowForm} />)}
                     </div>
                 </>
             }
