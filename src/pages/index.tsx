@@ -9,9 +9,9 @@ import { submit } from '@/handlers/login'
 
 export default function Home() {
     let [body, setBody] = useState([]);
-    // let [notes, setNotes] = useState([]);
+    let [noteId, setNoteId] = useState('abcdefghijklmnopqrstuvwxyz');
     const [showForm, setShowForm] = useState(true);
-    const [authorized, setAuthorized] = useState(false);
+    const [authorized, setAuthorized] = useState(true);
 
     useEffect(() => {
         const fetcNotes = async () => {
@@ -44,7 +44,7 @@ export default function Home() {
 
     const handleSave = async (event: any) => {
         event.preventDefault();
-        const body = { title: event.target.title.value, description: event.target.description.value }
+        const body = { title: event.target.title.value, description: event.target.description.value, id: noteId }
         const access_token = document.cookie.split(';').filter((c) => c.includes('access_token'))[0].split('=')[1];
 
         const data = await fetch(`http://localhost:3001/notes/create`, {
@@ -75,7 +75,7 @@ export default function Home() {
                         }
                     </div>
                     <div className={styles.seperator}>
-                        {body.map((n) => <NoteCard title={n.title} description={n.description} id={n.id} show={setShowForm} />)}
+                        {body.map((n) => <NoteCard title={n.title} description={n.description} id={n['_id']} show={setShowForm} setId={setNoteId} />)}
                     </div>
                 </>
             }

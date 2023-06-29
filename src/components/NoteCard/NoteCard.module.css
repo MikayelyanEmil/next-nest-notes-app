@@ -45,10 +45,20 @@
     margin-right: 40px;
 } */
 
-.saveBtn {
-    /* background-color: #cfd219; */
+.editBtn,
+.deleteBtn {
     width: 10%;
     border-radius: 10px;
-    border: #1c0e7b solid 2px;
     padding: 5px;
+    height: 30px;
+    margin: 0 2px;
+    cursor: pointer;
+}
+
+.editBtn {
+    border: #1c0e7b solid 2px;
+}
+
+.deleteBtn {
+    border: #d12020 solid 2px;
 }
