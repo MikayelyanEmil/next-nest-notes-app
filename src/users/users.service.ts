@@ -58,18 +58,4 @@ export class UsersService {
         return this.userModel.findOne({ email }).exec();
     }
 
-
-    // async _testForPopulate(createNoteDto: CreateNoteDto, email) {
-        // const note = new this.noteModel(createNoteDto);
-        // await note.save();
-        // const user = await this.userModel.findOne({ email });
-        // user.notes.push(note.id);
-        // await user.save();
-        // console.log(user);
-        // await user.populate('notes');
-        // console.log(user);
-
-        // console.log(note);
-
-    // }
 }
