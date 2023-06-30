@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import styles from '../styles/Login.module.css'
 import { NoteCard } from '@/components/NoteCard/NoteCard'
+import Login from '@/components/LoginForm/Login'
 
 export default function login() {
     const router = useRouter();
@@ -26,12 +27,6 @@ export default function login() {
 
 
     return (
-        // <form onSubmit={(e) => submit(e)} method='Post' className={styles.form}>
-        //     <Input text={'Email'} type={'email'} name={'email'} />
-        //     <br />
-        //     <Input text={'Password'} type={'password'} name={'password'} />
-        //     <center><Button type='submit' text='Log in' variant='primary' color='#1c0e7b;' /></center>
-        // </form>
-        <NoteCard title='Title' description='Descript' />
+        <Login />
     )
 }

@@ -6,6 +6,7 @@ import { Input } from '@/components/Input/Input'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { submit } from '@/handlers/login'
+import Login from '@/components/LoginForm/Login'
 
 export default function Home() {
     let [body, setBody] = useState([]);
@@ -83,12 +84,13 @@ export default function Home() {
 
             {authorized ||
                 <div className={styles.seperator}>
-                    <form onSubmit={(e) => submit(e)} method='Post' className={styles.form}>
+                    {/* <form onSubmit={(e) => submit(e)} method='Post' className={styles.form}>
                         <Input text={'Email'} type={'email'} name={'email'} />
                         <br />
                         <Input text={'Password'} type={'password'} name={'password'} />
                         <center><Button type='submit' text='Log in' variant='primary' color='#1c0e7b;' /></center>
-                    </form>
+                    </form> */}
+                    <center><Login /></center>
                 </div>
             }
         </div>
