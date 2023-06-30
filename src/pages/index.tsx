@@ -9,7 +9,7 @@ import { submit } from '@/handlers/login'
 
 export default function Home() {
     let [body, setBody] = useState([]);
-    let [noteId, setNoteId] = useState('abcdefghijklmnopqrstuvwxyz');
+    let [noteId, setNoteId] = useState('');
     const [showForm, setShowForm] = useState(true);
     const [authorized, setAuthorized] = useState(true);
 
@@ -46,8 +46,8 @@ export default function Home() {
         event.preventDefault();
         const body = { title: event.target.title.value, description: event.target.description.value, id: noteId }
         const access_token = document.cookie.split(';').filter((c) => c.includes('access_token'))[0].split('=')[1];
-
-        const data = await fetch(`http://localhost:3001/notes/create`, {
+        const endpoint = noteId ? 'update': 'create';
+        const data = await fetch(`http://localhost:3001/notes/${endpoint}`, {
             method: 'Post',
             headers: {
                 "Content-Type": "application/json",
@@ -57,6 +57,7 @@ export default function Home() {
             mode: 'cors'
         });
         await data.json();
+        await setNoteId('');
     }
 
     return (
