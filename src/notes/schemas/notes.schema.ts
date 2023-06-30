@@ -11,6 +11,8 @@ export class Note {
     @Prop()
     description: string;
 
+    @Prop()
+    author: string;
     // @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User'})
     // user: mongoose.Schema.Types.ObjectId;
 }

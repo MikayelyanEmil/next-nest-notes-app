@@ -25,8 +25,8 @@ export class UsersController {
 
     @UseGuards(JwtAuthGuard)
     @Get('verify')
-    verify(@Request() req) {
-        return req.user;
+    verify(@Request() req, @Response() res) {
+        res.send('122223333edd')
     }
 
     @UseGuards(LocalAuthGuard)

@@ -10,20 +10,26 @@ export class NotesController {
     constructor(
         private readonly notesService: NotesService
         // private readonly authService: AuthService
-    ) {} 
+    ) { }
 
-    @UseGuards(JwtAuthGuard) 
+    @UseGuards(JwtAuthGuard)
     @Post('create')
     create(@Request() req, @Body() createNoteDto: CreateNoteDto) {
-        // return this.notesService.create(createNoteDto, req.user);
-        console.log(createNoteDto);
-        
-        return this.notesService.test(createNoteDto, req.user);
+        console.log('Creating...');
+        return this.notesService.create(createNoteDto, req.user);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Post('update')
+    update(@Request() req, @Body() updateNoteDto: UpdateNoteDto) {
+        console.log('Updating...');
+        return this.notesService.update(updateNoteDto, req.user);
     }
 
     @UseGuards(JwtAuthGuard)
     @Post('delete')
-    delete(@Request() req, @Body() {id}) {
+    delete(@Request() req, @Body() { id }) {
+        console.log('Deleting...');
         return this.notesService.delete(id);
     }
 
@@ -32,5 +38,4 @@ export class NotesController {
     getAll(@Request() req) {
         return this.notesService.getAll(req.user);
     }
-    
 }

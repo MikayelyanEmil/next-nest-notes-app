@@ -13,23 +13,20 @@ export class NotesService {
         @InjectModel(User.name) private userModel: Model<UserModel>
     ) { }
 
-    // async create(createNoteDto: CreateNoteDto, user): Promise<Note> {
-    //     const note = new this.noteModel(createNoteDto);
-    //     await note.save();
-    //     user.notes.push(note.id);
-    //     await user.save();
-    //     return note;
-    // }
+    async create(createNoteDto: CreateNoteDto, user): Promise<Note> {
+        const note = new this.noteModel({...createNoteDto, author: user.email});
+        await note.save();
+        user.notes.push(note.id);
+        await user.save();
+        return note;
+    }
 
-    async test(createNoteDto: CreateNoteDto, user): Promise<Note> {
-        const { id, ...note } = createNoteDto;
-        console.log(note);
-        console.log(id);
-        return await this.noteModel.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, { title: 'titlle', description: 'desscc' }, { upsert: true });
+    async update(updateNoteDto: UpdateNoteDto, user): Promise<Note> {
+        return await this.noteModel.findByIdAndUpdate(updateNoteDto.id, { ...updateNoteDto, author: user.email }).exec();
     }
 
     async delete(id) {
-        return await this.noteModel.findByIdAndDelete(id, { returnDocument: 'after' });
+        return await this.noteModel.findByIdAndDelete(id, { returnDocument: 'after' }).exec();
     }
 
     async getAll(user): Promise<Note[]> {
