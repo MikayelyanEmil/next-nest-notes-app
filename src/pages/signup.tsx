@@ -19,13 +19,11 @@ export default function signup() {
       body: JSON.stringify(body),
       mode: 'cors'
     });
-    if (!response.ok) {
-      throw new Error('Bad request')
-    }
+
 
     const { access_token } = await response.json();
     document.cookie = "access_token=" + access_token;
-    router.push('/')
+    // router.push('/')
   }
 
   return (

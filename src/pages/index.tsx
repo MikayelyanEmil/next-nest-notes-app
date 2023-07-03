@@ -7,12 +7,15 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { submit } from '@/handlers/login'
 import Login from '@/components/LoginForm/Login'
+import Image from 'next/image'
+import loadingImage from '@/icons/Infinity-1s-200px.svg'
 
 export default function Home() {
     let [body, setBody] = useState([]);
     let [noteId, setNoteId] = useState('');
     const [showForm, setShowForm] = useState(true);
-    const [authorized, setAuthorized] = useState(true);
+    const [authorized, setAuthorized] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetcNotes = async () => {
@@ -26,14 +29,17 @@ export default function Home() {
                 });
                 if (!response.ok) {
                     setAuthorized(false);
-                    setBody(<h1>Unauthorized: Sign Up</h1>);
+                    setLoading(false);
+                    setBody([<h1>Unauthorized: Sign Up</h1>]);
                     return;
                 }
-                const notes = await response.json();
                 setAuthorized(true);
+                setLoading(false);
+                const notes = await response.json();
+
                 setBody(notes);
             } catch (error) {
-                setBody(<h1>Internal Server Error: 500</h1>);
+                setBody([<h1>Internal Server Error: 500</h1>]);
             }
         }
         fetcNotes()
@@ -45,25 +51,35 @@ export default function Home() {
 
     const handleSave = async (event: any) => {
         event.preventDefault();
-        const body = { title: event.target.title.value, description: event.target.description.value, id: noteId }
-        const access_token = document.cookie.split(';').filter((c) => c.includes('access_token'))[0].split('=')[1];
-        const endpoint = noteId ? 'update': 'create';
-        const data = await fetch(`http://localhost:3001/notes/${endpoint}`, {
-            method: 'Post',
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": "bearer " + access_token
-            },
-            body: JSON.stringify(body),
-            mode: 'cors'
-        });
-        await data.json();
-        await setNoteId('');
+        try {
+            const body = { title: event.target.title.value, description: event.target.description.value, id: noteId }
+            const access_token = document.cookie.split(';').filter((c) => c.includes('access_token'))[0]?.split('=')[1];
+            const endpoint = noteId ? 'update' : 'create';
+            const response = await fetch(`http://localhost:3001/notes/${endpoint}`, {
+                method: 'Post',
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "bearer " + access_token
+                },
+                body: JSON.stringify(body),
+                mode: 'cors'
+            });
+            if (!response.ok) {
+                setAuthorized(false);
+                setBody([<h1>Unauthorized: Sign Up</h1>]);
+                return;
+            }
+            await response.json();
+            await setNoteId('');
+        } catch (error) {
+            setBody([<h1>Internal Server Error: 500</h1>]);
+        }
+
     }
 
     return (
         <div className={styles.container}>
-            {!authorized ||
+            {loading ? <center><Image src={loadingImage} alt='Loading' width={100} height={100}/></center> : authorized ?
                 <>
                     <h2>Welcome !</h2>
                     <div className={styles.seperator}>
@@ -80,17 +96,12 @@ export default function Home() {
                         {body.map((n) => <NoteCard title={n.title} description={n.description} id={n['_id']} show={setShowForm} setId={setNoteId} />)}
                     </div>
                 </>
-            }
-
-            {authorized ||
+                :
                 <div className={styles.seperator}>
-                    {/* <form onSubmit={(e) => submit(e)} method='Post' className={styles.form}>
-                        <Input text={'Email'} type={'email'} name={'email'} />
-                        <br />
-                        <Input text={'Password'} type={'password'} name={'password'} />
-                        <center><Button type='submit' text='Log in' variant='primary' color='#1c0e7b;' /></center>
-                    </form> */}
-                    <center><Login /></center>
+                    <center>
+                        {/* {body} */}
+                        <Login />
+                    </center>
                 </div>
             }
         </div>
