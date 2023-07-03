@@ -15,12 +15,6 @@ export class UsersController {
         private readonly authService: AuthService
     ) { }
 
-    // @UseGuards(JwtAuthGuard)
-    // @Post('test')
-    // async test(@Request() req, @Body() createNoteDto: CreateNoteDto) {         
-    //     return this.usersService._testForPopulate(createNoteDto, req.user.sub);
-    // }
-
     @UseGuards(JwtAuthGuard)
     @Get('verify')
     verify(@Request() req, @Response() res) {
