@@ -5,7 +5,7 @@ import { Model, ObjectId } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Note, NoteModel, User, UserModel } from './schemas/users.schema';
-import { CreateNoteDto } from './dto/create-note.dto';
+
 
 
 

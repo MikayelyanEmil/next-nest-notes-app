@@ -14,7 +14,7 @@ export class NotesService {
     ) { }
 
     async create(createNoteDto: CreateNoteDto, user): Promise<Note> {
-        const note = new this.noteModel({...createNoteDto, author: user.email});
+        const note = new this.noteModel({...createNoteDto, author: `${user.name}-${user.email}`});
         await note.save();
         user.notes.push(note.id);
         await user.save();
@@ -22,7 +22,7 @@ export class NotesService {
     }
 
     async update(updateNoteDto: UpdateNoteDto, user): Promise<Note> {
-        return await this.noteModel.findByIdAndUpdate(updateNoteDto.id, { ...updateNoteDto, author: user.email }).exec();
+        return await this.noteModel.findByIdAndUpdate(updateNoteDto.id, { ...updateNoteDto }).exec();
     }
 
     async delete(id) {
