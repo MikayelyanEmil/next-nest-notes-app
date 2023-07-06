@@ -11,8 +11,12 @@ export default function signup() {
   const router = useRouter();
 
   const [errorMessage, setErrorMessage] = useState("");
-  const showErrorPopup = (message: any) => {
+  const showErrorPopup = (message: any, duration = 2000) => {
     setErrorMessage(message);
+
+    setTimeout(() => {
+      hideErrorPopup();
+    }, duration)
   };
   const hideErrorPopup = () => {
     setErrorMessage("");
@@ -45,7 +49,6 @@ export default function signup() {
 
   return (
     <center>
-      {/* <h2 className={styles.error}>{body}</h2> */}
       {errorMessage && (
         <Error message={errorMessage} onClose={hideErrorPopup} />
       )}

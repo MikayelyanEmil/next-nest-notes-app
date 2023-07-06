@@ -8,9 +8,9 @@ export default function Error({ message, onClose }) {
     <div className={styles.errorPopup}>
       <div className={styles.errorContent}>
         <span className={styles.errorMessage}>{message}</span>
-        <button className={styles.closeButton} onClick={onClose}>
+        {/* <button className={styles.closeButton} onClick={onClose}>
           <Image src={closeIcon} alt="close" />
-        </button>
+        </button> */}
       </div>
     </div>
   );

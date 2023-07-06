@@ -5,12 +5,12 @@ import { NoteCard } from '@/components/NoteCard/NoteCard'
 import { Input } from '@/components/Input/Input'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { submit } from '@/handlers/login'
 import Login from '@/components/LoginForm/Login'
 import Image from 'next/image'
 import loadingImage from '@/icons/Infinity-1s-200px.svg'
 
 export default function Home() {
+    let [error, setError] = useState('');
     let [body, setBody] = useState([]);
     let [noteId, setNoteId] = useState('');
     const [showForm, setShowForm] = useState(true);
@@ -30,16 +30,15 @@ export default function Home() {
                 if (!response.ok) {
                     setAuthorized(false);
                     setLoading(false);
-                    setBody([<h1>Unauthorized: Sign Up</h1>]);
+                    setError(<h1>Unauthorized: Sign Up</h1>);
                     return;
                 }
                 setAuthorized(true);
                 setLoading(false);
                 const notes = await response.json();
-
                 setBody(notes);
             } catch (error) {
-                setBody([<h1>Internal Server Error: 500</h1>]);
+                setError(<h1>Internal Server Error: 500</h1>);
             }
         }
         fetcNotes()
@@ -66,15 +65,14 @@ export default function Home() {
             });
             if (!response.ok) {
                 setAuthorized(false);
-                setBody([<h1>Unauthorized: Sign Up</h1>]);
+                setError(<h1>Unauthorized: Sign Up</h1>);
                 return;
             }
             await response.json();
             await setNoteId('');
         } catch (error) {
-            setBody([<h1>Internal Server Error: 500</h1>]);
+            setError(<h1>Internal Server Error: 500</h1>);
         }
-
     }
 
     return (
@@ -99,7 +97,6 @@ export default function Home() {
                 :
                 <div className={styles.seperator}>
                     <center>
-                        {/* {body} */}
                         <Login />
                     </center>
                 </div>
