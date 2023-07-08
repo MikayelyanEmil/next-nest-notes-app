@@ -1,8 +1,8 @@
 export const submit = async (event: any, setIsAuthorized, showErrorPopup) => {
     event.preventDefault();
-    const body = { email: event.target.email.value, password: event.target.password.value }
+    const body = { name: event.target.name.value, email: event.target.email.value, password: event.target.password.value }
     try {
-        const response = await fetch(`http://localhost:3001/users/login`, {
+        const response = await fetch(`http://localhost:3001/users/signup`, {
             method: 'Post',
             headers: {
                 "Content-Type": "application/json",
@@ -15,7 +15,7 @@ export const submit = async (event: any, setIsAuthorized, showErrorPopup) => {
         }
         const { access_token } = await response.json();
         document.cookie = "access_token=" + access_token;
-        setIsAuthorized(true);
+        setIsAuthorized(true)
     } catch (error) {
         showErrorPopup('Internal Server Error.');
     }

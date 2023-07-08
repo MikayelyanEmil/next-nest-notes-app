@@ -1,21 +1,18 @@
-import Head from 'next/head'
 import styles from '@/styles/Home.module.css'
 import { Button } from '../components/Button/Button'
 import { NoteCard } from '@/components/NoteCard/NoteCard'
 import { Input } from '@/components/Input/Input'
-import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import Login from '@/components/LoginForm/Login'
+import Signup from '@/components/SignupForm/Signup'
 import Image from 'next/image'
 import loadingImage from '@/icons/Infinity-1s-200px.svg'
 
-export default function Home() {
-    let [error, setError] = useState('');
+export default function Home({ isAuthorized, setIsAuthorized, loading, setLoading, signup, showSignup }) {
     let [body, setBody] = useState([]);
     let [noteId, setNoteId] = useState('');
     const [showForm, setShowForm] = useState(true);
-    const [authorized, setAuthorized] = useState(false);
-    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
 
     useEffect(() => {
         const fetcNotes = async () => {
@@ -28,17 +25,15 @@ export default function Home() {
                     }
                 });
                 if (!response.ok) {
-                    setAuthorized(false);
-                    setLoading(false);
-                    setError(<h1>Unauthorized: Sign Up</h1>);
-                    return;
+                    setIsAuthorized(false);
+                    return setLoading(false);
                 }
-                setAuthorized(true);
+                setIsAuthorized(true);
                 setLoading(false);
                 const notes = await response.json();
-                setBody(notes);
+                setBody(notes.reverse());
             } catch (error) {
-                setError(<h1>Internal Server Error: 500</h1>);
+                setError('Internal Server Error: 500');
             }
         }
         fetcNotes()
@@ -46,6 +41,7 @@ export default function Home() {
 
     const handleNew = () => {
         setShowForm(!showForm);
+        setIsAuthorized('rfrffrfe');
     }
 
     const handleSave = async (event: any) => {
@@ -64,22 +60,20 @@ export default function Home() {
                 mode: 'cors'
             });
             if (!response.ok) {
-                setAuthorized(false);
-                setError(<h1>Unauthorized: Sign Up</h1>);
-                return;
+                return setIsAuthorized(false);
             }
             await response.json();
             await setNoteId('');
         } catch (error) {
-            setError(<h1>Internal Server Error: 500</h1>);
+            setError('Internal Server Error: 500');
         }
     }
 
     return (
         <div className={styles.container}>
-            {loading ? <center><Image src={loadingImage} alt='Loading' width={100} height={100}/></center> : authorized ?
+            <center><h1>{error && error}</h1></center>
+            {loading ? <div className={styles.loading}><Image src={loadingImage} alt='Loading' width={100} height={100} /></div> : isAuthorized ?
                 <>
-                    <h2>Welcome !</h2>
                     <div className={styles.seperator}>
                         {!showForm || <Button text='Add New Note' variant='primary' onClick={handleNew} />}
                         {showForm ||
@@ -97,7 +91,10 @@ export default function Home() {
                 :
                 <div className={styles.seperator}>
                     <center>
-                        <Login />
+                        {signup ?
+                            <Signup setIsAuthorized={setIsAuthorized} /> :
+                            <Login setIsAuthorized={setIsAuthorized} />
+                        }
                     </center>
                 </div>
             }

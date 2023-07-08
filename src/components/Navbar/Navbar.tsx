@@ -4,52 +4,21 @@ import styles from './Navbar.module.css'
 import { useRouter } from 'next/router'
 import { Button } from '../Button/Button'
 
-export default function Navbar() {
+export default function Navbar({ isAuthorized, setIsAuthorized, loading, setLoading, signup, showSignup }) {
     const router = useRouter();
-    const [token, setToken] = useState('');
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        async function set() {
-            await setToken(document.cookie.split(';').filter((c) => c.includes('access_token'))[0]?.split('=')[1]);
-            await setLoading(false);
-        }
-        set();
-    })
-
-    // return (<>
-    //     {loading ? <></> : 
-    //         <nav className={styles.navbar}>
-    //             { router.pathname === '/signup' ? 
-    //                 <Link className={styles.link} href='/'>Log In</Link> : 
-    //                 <Link className={styles.link} href='/signup'>Sign Up</Link>
-    //             }
-    //         </nav> 
-    //     }
-    //     </>  
-    // )
-    if (!loading) {
-        if (token) {
-            if (router.pathname === '/signup') {
-                return (
-                    <nav className={styles.navbar}>
-                        <Link className={styles.link} href='/'>Log In</Link>
-                    </nav>
-                )
-            }
-            return (
-                <nav className={styles.navbar}>
-                    <Link className={styles.link} href='/signup'>Sign Up</Link>
-                </nav>
-            )
-        }
-        else {
-            return (
-                <nav className={styles.navbar}>
-                    <Button text='Log Out' variant='primary' />
-                </nav>
-            )
-        }
+    const logOut = async () => {
+        document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        setIsAuthorized(false);
+        setLoading(true);
     }
 
+    return (
+        <nav className={styles.navbar}>
+            {loading ? <></> : isAuthorized ? <>Welcome<Button text='Log Out' variant='secondary' onClick={logOut} /></>
+            : <> NotesApp {signup ? <Button text='Log In' variant='secondary' onClick={() => showSignup(false)} /> : 
+              <Button text='Sign Up' variant='secondary' onClick={() => showSignup(true)} />}
+              </>
+            }
+        </nav>
+    )
 }
