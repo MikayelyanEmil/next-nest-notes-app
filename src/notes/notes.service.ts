@@ -25,13 +25,20 @@ export class NotesService {
         return await this.noteModel.findByIdAndUpdate(updateNoteDto.id, { ...updateNoteDto }).exec();
     }
 
-    async delete(id) {
+    async delete(id, user) {
+        let note = await this.noteModel.findById(id).exec();
+        // user.notes.filter((n) => n != note.id);
+        // console.log(await user.notes.findByIdAndDelete(id, { returnDocument: 'after' }).exec());
+        // await user.save();
         return await this.noteModel.findByIdAndDelete(id, { returnDocument: 'after' }).exec();
     }
 
-    async getAll(user): Promise<Note[]> {
+    async getAll(user) {
         await user.populate('notes');
-        return user.notes;
+        return { 
+            user: user.name,
+            notes: user.notes 
+        };
     }
 
 }

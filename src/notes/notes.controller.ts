@@ -9,7 +9,6 @@ import { UpdateNoteDto } from './dto/update-note.dto';
 export class NotesController {
     constructor(
         private readonly notesService: NotesService
-        // private readonly authService: AuthService
     ) { }
 
     @UseGuards(JwtAuthGuard)
@@ -29,8 +28,8 @@ export class NotesController {
     @UseGuards(JwtAuthGuard)
     @Post('delete')
     delete(@Request() req, @Body() { id }) {
-        console.log('Deleting...');
-        return this.notesService.delete(id);
+        console.log('Deleting...'); 
+        return this.notesService.delete(id, req.user);
     }
 
     @UseGuards(JwtAuthGuard)
