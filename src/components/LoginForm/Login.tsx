@@ -5,7 +5,7 @@ import { Button } from '../Button/Button'
 import styles from './Login.module.css'
 import Error from '../ErrorMessage/Error'
 
-export default function Login({ setIsAuthorized }) {
+export default function Login({ setIsAuthorized, setUser }) {
     const [errorMessage, setErrorMessage] = useState("");
     const showErrorPopup = (message: any, duration = 1500) => {
         setErrorMessage(message);
@@ -23,7 +23,7 @@ export default function Login({ setIsAuthorized }) {
             {errorMessage && (
                 <Error message={errorMessage} onClose={hideErrorPopup} />
             )}
-            <form onSubmit={(e) => submit(e, setIsAuthorized, showErrorPopup)} method='Post' className={styles.form}>
+            <form onSubmit={(e) => submit(e, setIsAuthorized, showErrorPopup, setUser)} method='Post' className={styles.form}>
                 <Input text={'Email'} type={'email'} name={'email'} />
                 <br />
                 <Input text={'Password'} type={'password'} name={'password'} />

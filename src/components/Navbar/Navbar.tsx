@@ -4,18 +4,20 @@ import styles from './Navbar.module.css'
 import { useRouter } from 'next/router'
 import { Button } from '../Button/Button'
 
-export default function Navbar({ isAuthorized, setIsAuthorized, loading, setLoading, signup, showSignup }) {
+export default function Navbar({ isAuthorized, setIsAuthorized, loading, setLoading, signup, showSignup, user, setUser, setBody }) {
     const router = useRouter();
     const logOut = async () => {
+        await setBody([]);
+        await setLoading(true);
         document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        setIsAuthorized(false);
-        setLoading(true);
+        await setUser('');
+        await setIsAuthorized(false);
     }
 
     return (
         <nav className={styles.navbar}>
-            {loading ? <></> : isAuthorized ? <>Welcome<Button text='Log Out' variant='secondary' onClick={logOut} /></>
-            : <> NotesApp {signup ? <Button text='Log In' variant='secondary' onClick={() => showSignup(false)} /> : 
+            {loading ? <></> : isAuthorized ? <><h1 className={styles.title}>Welcome, {user} !</h1><Button text='Log Out' variant='secondary' onClick={logOut} /></>
+            : <> <h1 className={styles.title}>The Web Notes</h1> {signup ? <Button text='Log In' variant='secondary' onClick={() => showSignup(false)} /> : 
               <Button text='Sign Up' variant='secondary' onClick={() => showSignup(true)} />}
               </>
             }

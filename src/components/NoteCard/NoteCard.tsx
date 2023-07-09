@@ -15,7 +15,9 @@ interface INoteCard {
 
 export const NoteCard: React.FC<INoteCard> = ({ title, description, id, show, setId }) => {
   const handleEdit = async (id) => {
-    await show(false);
+    // try this  
+    await show(true);
+    // without await.
     await setId(id);
     document.getElementById('title').value = title;
     document.getElementById('description').value = description;
@@ -23,7 +25,6 @@ export const NoteCard: React.FC<INoteCard> = ({ title, description, id, show, se
 
   const handleDelete = async (id) => {
     const access_token = document.cookie.split(';').filter((c) => c.includes('access_token'))[0].split('=')[1];
-
     const data = await fetch(`http://localhost:3001/notes/delete`, {
       method: 'Post',
       headers: {
@@ -33,7 +34,6 @@ export const NoteCard: React.FC<INoteCard> = ({ title, description, id, show, se
       body: JSON.stringify({id}),
       mode: 'cors'
     });
-    await data.json();
   }
 
   return (

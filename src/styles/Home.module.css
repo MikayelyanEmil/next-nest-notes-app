@@ -7,10 +7,31 @@
     padding: 30px 0;
 }
 
-.form {
-    border-radius: 10px; 
-    border: solid 2px #ccc;
-    padding: 30px;
+.createNoteForm {
+    margin: 10px 0;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    width: 600px;
+    padding: 20px;
+    height: fit-content;
+}
+
+.createNoteForm div {
+    margin-top: 20px;
+}
+
+.createNoteForm button {
+    float: right;
+}
+
+.closeFormBtn {
+    float: right;
+    box-sizing: border-box;
+    width: fit-content;
+    height: fit-content;
+    border: none;
+    background: none;
+    cursor: pointer;
 }
 
 .loading {
@@ -22,4 +43,33 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.textareaTitle,
+.textareaDescription {
+    /* overflow-y: hidden; */
+    width: 100%;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    transition: border-color 0.3s ease-in-out;
+    resize: none; 
+    outline: none;
+    font-size: 18px;
+    height: 120px;
+    padding: 6px;
+}
+
+.textareaTitle {
+    overflow-y: hidden;
+    height: 36px;
+    font-size: 24px;
+}
+
+/* .textareaDescription {
+    height: 120px;
+} */
+
+.textareaTitle:focus,
+.textareaDescription:focus {
+    border-color: #1c0e7b;
 }
