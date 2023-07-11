@@ -9,11 +9,12 @@ interface INoteCard {
   title: string,
   description: string,
   id: string,
-  show?: () => void,
-  setId?: () => void
+  show: () => void,
+  setId: () => void,
+  setIsAuthorized: () => void
 }
 
-export const NoteCard: React.FC<INoteCard> = ({ title, description, id, show, setId }) => {
+export const NoteCard: React.FC<INoteCard> = ({ title, description, id, show, setId, setIsAuthorized }) => {
   const handleEdit = async (id) => {
     // try this  
     await show(true);
@@ -24,23 +25,31 @@ export const NoteCard: React.FC<INoteCard> = ({ title, description, id, show, se
   }
 
   const handleDelete = async (id) => {
-    const access_token = document.cookie.split(';').filter((c) => c.includes('access_token'))[0].split('=')[1];
-    const data = await fetch(`http://localhost:3001/notes/delete`, {
-      method: 'Post',
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "bearer " + access_token
-      },
-      body: JSON.stringify({id}),
-      mode: 'cors'
-    });
+    try {
+      const access_token = document.cookie.split(';').filter((c) => c.includes('access_token'))[0]?.split('=')[1];
+      const response = await fetch(`${process.env.BACKEND_URL}/notes/delete`, {
+        method: 'Post',
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "bearer " + access_token
+        },
+        body: JSON.stringify({ id }),
+        mode: 'cors'
+      });
+      if (!response.ok) {
+        return setIsAuthorized(false);
+      }
+    } catch (error) {
+
+    }
+
   }
 
   return (
     <div className={styles.notecard} key={id}>
       <div className={styles.top}>
         <span className={styles.title}>{title}</span>
-        <button className={styles.editBtn} onClick={() => handleEdit(id)}><Image src={editIcon} height={18} width={18} alt='Edit'/></button>
+        <button className={styles.editBtn} onClick={() => handleEdit(id)}><Image src={editIcon} height={18} width={18} alt='Edit' /></button>
         <button className={styles.deleteBtn} onClick={() => handleDelete(id)}> <Image src={redDeleteIcon} height={18} width={18} alt='Delete' /></button>
       </div>
       <div className={styles.description}>{description}</div>

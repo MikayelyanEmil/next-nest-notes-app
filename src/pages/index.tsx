@@ -19,7 +19,7 @@ export default function Home({ isAuthorized, setIsAuthorized, loading, setLoadin
         const fetcNotes = async () => {
             const access_token = document.cookie.split(';').filter((c) => c.includes('access_token'))[0]?.split('=')[1];
             try {
-                const response = await fetch(`http://localhost:3001/notes`, {
+                const response = await fetch(`${process.env.BACKEND_URL}/notes`, {
                     method: 'Get',
                     headers: {
                         'Authorization': 'bearer ' + access_token
@@ -49,7 +49,7 @@ export default function Home({ isAuthorized, setIsAuthorized, loading, setLoadin
             const body = { title: event.target.title.value, description: event.target.description.value, id: noteId }
             const access_token = document.cookie.split(';').filter((c) => c.includes('access_token'))[0]?.split('=')[1];
             const endpoint = noteId ? 'update' : 'create';
-            const response = await fetch(`http://localhost:3001/notes/${endpoint}`, {
+            const response = await fetch(`${process.env.BACKEND_URL}/notes/${endpoint}`, {
                 method: 'Post',
                 headers: {
                     "Content-Type": "application/json",
@@ -97,7 +97,7 @@ export default function Home({ isAuthorized, setIsAuthorized, loading, setLoadin
                         }
                     </div>
                     <div className={styles.seperator}>
-                        {body.map((n) => <NoteCard title={n.title} description={n.description} id={n['_id']} show={setShowCreateForm} setId={setNoteId} />)}
+                        {body.map((n) => <NoteCard title={n.title} description={n.description} id={n['_id']} show={setShowCreateForm} setId={setNoteId} setIsAuthorized={setIsAuthorized} />)}
                     </div>
                 </>
                 :

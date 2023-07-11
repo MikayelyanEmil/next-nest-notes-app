@@ -2,7 +2,7 @@ export const submit = async (event: any, setIsAuthorized, showErrorPopup, setUse
     event.preventDefault();
     const body = { email: event.target.email.value, password: event.target.password.value }
     try {
-        const response = await fetch(`http://localhost:3001/users/login`, {
+        const response = await fetch(`${process.env.BACKEND_URL}/users/login`, {
             method: 'Post',
             headers: {
                 "Content-Type": "application/json",
