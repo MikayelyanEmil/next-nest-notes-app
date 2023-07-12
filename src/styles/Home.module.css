@@ -73,3 +73,12 @@
 .textareaDescription:focus {
     border-color: #1c0e7b;
 }
+
+@media only screen and (max-width: 600px) {
+    .container {
+        min-width: auto;
+    }
+    .createNoteForm {
+        width: 350px;
+    }
+}

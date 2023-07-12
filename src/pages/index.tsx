@@ -26,17 +26,17 @@ export default function Home({ isAuthorized, setIsAuthorized, loading, setLoadin
                     }
                 });
                 if (!response.ok) {
+                    setBody([]);
                     setIsAuthorized(false);
                     return setLoading(false);
                 }
                 
                 const { user, notes } = await response.json();
                 await setBody(notes.reverse());
-                setUser(user);
-                setIsAuthorized(true);
-                setLoading(false);
+                await setUser(user);
+                await setIsAuthorized(true);
+                await setLoading(false);
             } catch (error) {
-                // setError('Internal Server Error: 500');
                 setLoading(true);
             }
         }
@@ -59,12 +59,12 @@ export default function Home({ isAuthorized, setIsAuthorized, loading, setLoadin
                 mode: 'cors'
             });
             if (!response.ok) {
+                setBody([]);
                 return setIsAuthorized(false);
             }
             await response.json();
             await setNoteId('');
         } catch (error) {
-            // setError('Internal Server Error: 500');
             setLoading(true);
         }
     }
