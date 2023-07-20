@@ -5,7 +5,12 @@ import { Button } from '../Button/Button'
 import styles from './Signup.module.css'
 import Error from '../ErrorMessage/Error'
 
-export default function Signup({ setIsAuthorized, setUser }) {
+interface ISignup {
+  setIsAuthorized: any,
+  setUser: any
+}
+
+const Signup: React.FC<ISignup> = ({ setIsAuthorized, setUser }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const showErrorPopup = (message: any, duration = 1500) => {
     setErrorMessage(message);
@@ -36,3 +41,4 @@ export default function Signup({ setIsAuthorized, setUser }) {
     </center>
   )
 }
+export default Signup;

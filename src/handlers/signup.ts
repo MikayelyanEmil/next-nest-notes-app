@@ -1,4 +1,4 @@
-export const submit = async (event: any, setIsAuthorized, showErrorPopup, setUser) => {
+export const submit = async (event: any, setIsAuthorized: any, showErrorPopup: any, setUser: any) => {
     event.preventDefault();
     const body = { name: event.target.name.value, email: event.target.email.value, password: event.target.password.value }
     try {

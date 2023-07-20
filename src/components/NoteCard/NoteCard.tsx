@@ -9,22 +9,24 @@ interface INoteCard {
   title: string,
   description: string,
   id: string,
-  show: () => void,
-  setId: () => void,
-  setIsAuthorized: () => void
+  show: any,
+  setId: any,
+  setIsAuthorized: any
 }
 
 export const NoteCard: React.FC<INoteCard> = ({ title, description, id, show, setId, setIsAuthorized }) => {
-  const handleEdit = async (id) => {
+  const handleEdit = async (id: any) => {
     // try this  
     await show(true);
     // without await.
     await setId(id);
-    document.getElementById('title').value = title;
-    document.getElementById('description').value = description;
+    const titleElement = document.getElementById('title') as HTMLTextAreaElement;
+    const descriptionElement = document.getElementById('description') as HTMLTextAreaElement;
+    titleElement.value = title;
+    descriptionElement.value = description;
   }
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id: any) => {
     try {
       const access_token = document.cookie.split(';').filter((c) => c.includes('access_token'))[0]?.split('=')[1];
       const response = await fetch(`${process.env.BACKEND_URL}/notes/delete`, {

@@ -9,8 +9,18 @@ import Image from 'next/image'
 import loadingImage from '@/icons/Infinity-1s-200px.svg'
 import closeIcon from '@/icons/close.svg'
 
-export default function Home({ isAuthorized, setIsAuthorized, loading, setLoading, signup, setUser, body, setBody }) {
-    // let [body, setBody] = useState([]);
+interface IHome {
+    isAuthorized: boolean,
+    setIsAuthorized: any, 
+    loading: boolean, 
+    setLoading: any, 
+    signup: boolean, 
+    setUser: any, 
+    body: any[],
+    setBody: any
+}
+
+const Home: React.FC<IHome> = ({ isAuthorized, setIsAuthorized, loading, setLoading, signup, setUser, body, setBody }) => {
     let [noteId, setNoteId] = useState('');
     const [showCreateForm, setShowCreateForm] = useState(false);
     const [error, setError] = useState('');
@@ -97,7 +107,7 @@ export default function Home({ isAuthorized, setIsAuthorized, loading, setLoadin
                         }
                     </div>
                     <div className={styles.seperator}>
-                        {body.map((n) => <NoteCard key={n['_id']} title={n.title} description={n.description} id={n['_id']} show={setShowCreateForm} setId={setNoteId} setIsAuthorized={setIsAuthorized} />)}
+                        {body.map((n: any) => <NoteCard key={n['_id']} title={n.title} description={n.description} id={n['_id']} show={setShowCreateForm} setId={setNoteId} setIsAuthorized={setIsAuthorized} />)}
                     </div>
                 </>
                 :
@@ -113,3 +123,4 @@ export default function Home({ isAuthorized, setIsAuthorized, loading, setLoadin
         </div>
     )
 }
+export default Home;

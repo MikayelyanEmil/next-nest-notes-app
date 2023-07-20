@@ -4,7 +4,19 @@ import styles from './Navbar.module.css'
 import { useRouter } from 'next/router'
 import { Button } from '../Button/Button'
 
-export default function Navbar({ isAuthorized, setIsAuthorized, loading, setLoading, signup, showSignup, user, setUser, setBody }) {
+interface INavbar {
+    isAuthorized: boolean,
+    setIsAuthorized: any, 
+    loading: boolean, 
+    setLoading: any, 
+    signup: boolean, 
+    showSignup: any, 
+    user: string, 
+    setUser: any, 
+    setBody: any
+}
+
+const Navbar: React.FC<INavbar> = ({ isAuthorized, setIsAuthorized, loading, setLoading, signup, showSignup, user, setUser, setBody }) => {
     const router = useRouter();
     const logOut = async () => {
         await setBody([]);
@@ -24,3 +36,4 @@ export default function Navbar({ isAuthorized, setIsAuthorized, loading, setLoad
         </nav>
     )
 }
+export default Navbar;

@@ -5,7 +5,12 @@ import { Button } from '../Button/Button'
 import styles from './Login.module.css'
 import Error from '../ErrorMessage/Error'
 
-export default function Login({ setIsAuthorized, setUser }) {
+interface ILogin {
+    setIsAuthorized: any,
+    setUser: any
+}
+
+const Login: React.FC<ILogin> = ({ setIsAuthorized, setUser }) => {
     const [errorMessage, setErrorMessage] = useState("");
     const showErrorPopup = (message: any, duration = 1500) => {
         setErrorMessage(message);
@@ -30,7 +35,8 @@ export default function Login({ setIsAuthorized, setUser }) {
                 <br />
                 <center><Button type='submit' text='Log in' variant='primary' color='#1c0e7b;' /></center>
             </form>
-        </> 
+        </>
 
     )
 }
+export default Login;

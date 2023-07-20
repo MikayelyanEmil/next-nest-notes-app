@@ -2,7 +2,20 @@ import Link from 'next/link'
 import styles from './Layout.module.css'
 import Navbar from '../Navbar/Navbar'
 
-export default function Layout({ children, isAuthorized, setIsAuthorized, loading, setLoading, signup, showSignup, user, setUser, setBody }) {
+interface ILayout {
+  children: any,
+  isAuthorized: boolean
+  setIsAuthorized: any, 
+  loading: boolean, 
+  setLoading: any, 
+  signup: boolean, 
+  showSignup: any, 
+  user: string, 
+  setUser: any, 
+  setBody: any
+}
+
+const Layout: React.FC<ILayout> = ({ children, isAuthorized, setIsAuthorized, loading, setLoading, signup, showSignup, user, setUser, setBody }) => {
   return (
     <>
       <header>
@@ -15,3 +28,4 @@ export default function Layout({ children, isAuthorized, setIsAuthorized, loadin
     </>
   )
 }
+export default Layout;
