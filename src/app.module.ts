@@ -13,9 +13,9 @@ import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: `.${process.env.NODE_ENV}.env`
-    }),
-    UsersModule, 
+      envFilePath: `.env`
+    }), 
+    UsersModule,  
     AuthModule, 
     MongooseModule.forRoot(process.env.MONGO),
     NotesModule,

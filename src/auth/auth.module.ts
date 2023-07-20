@@ -14,7 +14,7 @@ import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: `.${process.env.NODE_ENV}.env`
+      envFilePath: `.env`
     }),
     forwardRef(() => UsersModule),
     PassportModule,
