@@ -12,7 +12,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     async validate(email: string, password: string): Promise<any> { 
         const user = await this.authService.validateUser(email, password);
         if (user == null) {
-            throw new UnauthorizedException();
+            throw new UnauthorizedException("This user does not exist.");
         }
         else if (user == false) {
             throw new UnauthorizedException("Invalid Password: Please try again.")
