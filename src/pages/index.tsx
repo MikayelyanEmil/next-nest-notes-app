@@ -97,7 +97,7 @@ export default function Home({ isAuthorized, setIsAuthorized, loading, setLoadin
                         }
                     </div>
                     <div className={styles.seperator}>
-                        {body.map((n) => <NoteCard title={n.title} description={n.description} id={n['_id']} show={setShowCreateForm} setId={setNoteId} setIsAuthorized={setIsAuthorized} />)}
+                        {body.map((n) => <NoteCard key={n['_id']} title={n.title} description={n.description} id={n['_id']} show={setShowCreateForm} setId={setNoteId} setIsAuthorized={setIsAuthorized} />)}
                     </div>
                 </>
                 :
