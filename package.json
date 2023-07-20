@@ -8,8 +8,8 @@
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "nest start",
-    "start:dev": "nest start --watch",
+    "start": "cross-env NODE_ENV=production nest start",
+    "start:dev": "cross-env NODE_ENV=development nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",
-    "@nestjs/config": "^2.2.0",
+    "@nestjs/config": "^2.3.4",
     "@nestjs/core": "^9.0.0",
     "@nestjs/jwt": "^10.0.3",
     "@nestjs/mongoose": "^9.2.2",
@@ -29,6 +29,7 @@
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/typeorm": "^9.0.1",
     "bcrypt": "^5.1.0",
+    "cross-env": "^7.0.3",
     "mogoose": "^0.0.1-security",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",

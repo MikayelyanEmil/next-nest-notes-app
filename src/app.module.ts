@@ -5,17 +5,23 @@ import { UsersModule } from './users/users.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
 import { NotesModule } from './notes/notes.module';
+import { ConfigModule } from '@nestjs/config';
+
 
 
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      envFilePath: `.${process.env.NODE_ENV}.env`
+    }),
     UsersModule, 
-    AuthModule,
-    MongooseModule.forRoot(`mongodb+srv://emil:dfgsap@userscluster.wqtwqdy.mongodb.net/test`),
-    NotesModule
+    AuthModule, 
+    MongooseModule.forRoot(process.env.MONGO),
+    NotesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}
+

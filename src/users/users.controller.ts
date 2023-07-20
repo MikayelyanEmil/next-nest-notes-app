@@ -15,12 +15,6 @@ export class UsersController {
         private readonly authService: AuthService
     ) { }
 
-    @UseGuards(JwtAuthGuard)
-    @Get('verify')
-    verify(@Request() req, @Response() res) {
-        res.send('122223333edd')
-    }
-
     @UseGuards(LocalAuthGuard)
     @Post('login') 
     async login(@Request() req) {
