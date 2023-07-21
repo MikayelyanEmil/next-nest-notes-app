@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   env: {
-    BACKEND_URL: 'http://localhost:3001'
+    BACKEND_URL: 'https://eager-fly-moccasins.cyclic.app'
   }
 }
 
