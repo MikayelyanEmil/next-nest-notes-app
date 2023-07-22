@@ -20,6 +20,12 @@ interface IHome {
     setBody: any
 }
 
+interface NoteBody {
+    title: string,
+    description: string,
+    id?: string
+}
+
 const Home: React.FC<IHome> = ({ isAuthorized, setIsAuthorized, loading, setLoading, signup, setUser, body, setBody }) => {
     let [noteId, setNoteId] = useState('');
     const [showCreateForm, setShowCreateForm] = useState(false);
@@ -56,7 +62,7 @@ const Home: React.FC<IHome> = ({ isAuthorized, setIsAuthorized, loading, setLoad
     const handleSave = async (event: any) => {
         event.preventDefault();
         try {
-            const body = { title: event.target.title.value, description: event.target.description.value }
+            const body: NoteBody = { title: event.target.title.value, description: event.target.description.value }
             const access_token = document.cookie.split(';').filter((c) => c.includes('access_token'))[0]?.split('=')[1];
             let endpoint;
             if (noteId) {
