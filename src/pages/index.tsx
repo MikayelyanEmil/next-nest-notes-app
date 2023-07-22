@@ -56,7 +56,7 @@ const Home: React.FC<IHome> = ({ isAuthorized, setIsAuthorized, loading, setLoad
     const handleSave = async (event: any) => {
         event.preventDefault();
         try {
-            const body = { title: event.target.title.value, description: event.target.description.value, id: noteId }
+            const body = { title: event.target.title.value, description: event.target.description.value }
             const access_token = document.cookie.split(';').filter((c) => c.includes('access_token'))[0]?.split('=')[1];
             let endpoint;
             if (noteId) {
