@@ -58,7 +58,12 @@ const Home: React.FC<IHome> = ({ isAuthorized, setIsAuthorized, loading, setLoad
         try {
             const body = { title: event.target.title.value, description: event.target.description.value, id: noteId }
             const access_token = document.cookie.split(';').filter((c) => c.includes('access_token'))[0]?.split('=')[1];
-            const endpoint = noteId ? 'update' : 'create';
+            let endpoint;
+            if (noteId) {
+                body.id = noteId;
+                endpoint = 'update';
+            }
+            else endpoint = 'create';
             const response = await fetch(`${process.env.BACKEND_URL}/notes/${endpoint}`, {
                 method: 'Post',
                 headers: {
