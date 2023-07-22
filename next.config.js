@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   env: {
-    BACKEND_URL: 'https://inquisitive-overcoat-moth.cyclic.app'
+    BACKEND_URL: process.env.BACKEND_URL
   }
 }
 
