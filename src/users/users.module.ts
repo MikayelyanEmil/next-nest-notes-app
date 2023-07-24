@@ -4,6 +4,8 @@ import { User, UserSchema } from './schemas/users.schema';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import { AuthModule } from 'src/auth/auth.module';
+import { TokenService } from './token.service';
+import { MailService } from './mail.service';
 
 @Module({
     imports: [
@@ -13,7 +15,7 @@ import { AuthModule } from 'src/auth/auth.module';
         forwardRef(() => AuthModule)
     ],
     controllers: [UsersController],
-    providers: [UsersService],
+    providers: [UsersService, MailService, TokenService],
     exports: [UsersService]
 })
 export class UsersModule { }

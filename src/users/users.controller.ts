@@ -27,6 +27,16 @@ export class UsersController {
         return this.authService.login(user);
     }
 
+    @Get('refresh')
+    async refresh() {
+        
+    }
+
+    @Get('activate')
+    async activate() {
+        
+    }
+
     @Get(':id')
     getOne(@Param('id') id) {
         return this.usersService.getOne(id);

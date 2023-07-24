@@ -5,7 +5,8 @@ import { Model, ObjectId } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Note, NoteModel, User, UserModel } from './schemas/users.schema';
-
+import { v4 as uuidv4 } from 'uuid';
+import { MailService } from './mail.service';
 
 
 
@@ -15,6 +16,7 @@ import { Note, NoteModel, User, UserModel } from './schemas/users.schema';
 export class UsersService {
     constructor (
         @InjectModel(User.name) private userModel: Model<UserModel>,
+        private mailService: MailService
     ) { }
 
     async create(createUserDto: CreateUserDto): Promise<User> {
@@ -26,8 +28,11 @@ export class UsersService {
  
         try {
             const hash = await bcrypt.hash(password, 10);
+            const activationId = uuidv4();
             let user = new this.userModel({ ...createUserDto, password: hash });
-            return await user.save();
+            await user.save();
+            await this.mailService.sendActivationMail(email, `$`);
+            return user
         } catch (error) {
             if (error.code === 11000) throw new BadRequestException('Account with that email already exists');            
         }
@@ -39,7 +44,7 @@ export class UsersService {
     }
 
 
-    async get(): Promise<User[]> {
+    async get(): Promise<User[]> {        
         return this.userModel.find().exec();
     }
 
