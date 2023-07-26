@@ -1,16 +1,27 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
+// import { User } from 'src/users/schemas/users.schema';
+import { v4 as uuidv4 } from 'uuid';
+import { User, UserModel } from 'src/users/schemas/users.schema';
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
+import { MailService } from './mail.service';
+import { Token, TokenModel } from './schemas/token.schema';
+
 
 @Injectable()
 export class AuthService {
     constructor(
         private usersService: UsersService,
         private jwtService: JwtService,
-        private configService: ConfigService
+        private configService: ConfigService,
+        private mailService: MailService,
+        @InjectModel(User.name) private userModel: Model<UserModel>,
+        @InjectModel(Token.name) private tokenModel: Model<TokenModel>
     ) { }
 
     async generateTokens(payload) {
@@ -30,8 +41,14 @@ export class AuthService {
         }
     }
 
-    async saveRefreshToken() {
-        
+    async saveRefreshToken(userId, refresh_token): Promise<Token> {
+        let token = await this.tokenModel.findOne({ userId });
+        if (token) {
+            token.refresh_token = refresh_token;
+            return token.save();
+        }
+        token = new this.tokenModel({ userId, refresh_token });
+        return token.save();
     }
 
     async validateUser(email, password): Promise<any> {
@@ -52,4 +69,36 @@ export class AuthService {
             user: payload.name
         }
     }
+
+
+    async signup(createUserDto: CreateUserDto): Promise<any> {
+
+        const { email, password } = createUserDto;
+        let errorMessages = [];
+        if (!/^(?!$)([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/.test(email)) errorMessages.push('Please enter a valid email address');
+        if (!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(password)) errorMessages.push('Password must be at least 8 chars long and contain at least one number and one letter');
+        if (errorMessages.length) throw new BadRequestException(errorMessages.join(', '));
+
+        const hash = await bcrypt.hash(password, 10);
+        const activationId = uuidv4();
+
+        let user = new this.userModel({ ...createUserDto, password: hash });
+        
+        try {
+            await user.save();
+        } catch (error) {
+            if (error.code === 11000) throw new BadRequestException('Account with that email already exists');
+        }
+
+        await this.mailService.sendActivationMail(email, `$`);
+        const payload = { name: user.name, sub: user.email };
+        const tokens = await this.generateTokens(payload);
+        await this.saveRefreshToken(user.id, tokens.refresh_token);
+        return {
+            ...tokens,
+            user: payload.name
+        }
+    }
 }
+
+

@@ -23,8 +23,8 @@ export class UsersController {
  
     @Post('signup')
     async create(@Body() createUserDto: CreateUserDto) { 
-        const user = await this.usersService.create(createUserDto);
-        return this.authService.login(user);
+        // const user = await this.authService.signup(createUserDto);
+        return this.authService.signup(createUserDto); 
     }
 
     @Get('refresh')

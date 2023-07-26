@@ -10,8 +10,10 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from 'src/users/schemas/users.schema';
 import { ConfigModule } from '@nestjs/config';
 import { TokenService } from './token.service';
+import { MailService } from './mail.service';
+import { Token, TokenSchema } from './schemas/token.schema';
 
- 
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -19,12 +21,13 @@ import { TokenService } from './token.service';
     }),
     forwardRef(() => UsersModule),
     PassportModule,
-    JwtModule.register({}), 
+    JwtModule.register({}),
     MongooseModule.forFeature([
-      { name: User.name, schema: UserSchema }
+      { name: User.name, schema: UserSchema },
+      { name: Token.name, schema: TokenSchema }
     ])
   ],
-  providers: [AuthService, LocalStrategy, JwtStrategy, TokenService],
+  providers: [AuthService, LocalStrategy, JwtStrategy, TokenService, MailService],
   exports: [AuthService]
 })
 export class AuthModule { }

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class MailService { 
-    sendActivationMail(to, link) {
+    async sendActivationMail(to, link) {
         return 3333;
     }
 }
