@@ -24,6 +24,10 @@ export class AuthService {
         @InjectModel(Token.name) private tokenModel: Model<TokenModel>
     ) { }
 
+    async refreshToken() {
+
+    }
+
     async generateTokens(payload) {
         const [access_token, refresh_token] = await Promise.all([
             this.jwtService.signAsync(payload, {
@@ -32,7 +36,7 @@ export class AuthService {
             }),
             this.jwtService.signAsync(payload, {
                 secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
-                expiresIn: this.configService.get<string>('JWT_REFRESH_EXPIRY')
+                expiresIn: this.configService.get<string>('JWT_REFRESH_EXPIRY') 
             })
         ]);
         return {
@@ -42,13 +46,7 @@ export class AuthService {
     }
 
     async saveRefreshToken(userId, refresh_token): Promise<Token> {
-        let token = await this.tokenModel.findOne({ userId });
-        if (token) {
-            token.refresh_token = refresh_token;
-            return token.save();
-        }
-        token = new this.tokenModel({ userId, refresh_token });
-        return token.save();
+        return this.tokenModel.findOneAndUpdate({userId}, { refresh_token }, {upsert: true});
     }
 
     async validateUser(email, password): Promise<any> {
@@ -82,10 +80,9 @@ export class AuthService {
         const hash = await bcrypt.hash(password, 10);
         const activationId = uuidv4();
 
-        let user = new this.userModel({ ...createUserDto, password: hash });
-        
+        let user;
         try {
-            await user.save();
+            user = await this.usersService.create({...createUserDto, password: hash});
         } catch (error) {
             if (error.code === 11000) throw new BadRequestException('Account with that email already exists');
         }

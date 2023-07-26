@@ -5,7 +5,7 @@ import { UsersService } from './users.service';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from 'src/auth/auth.service';
 import { LocalAuthGuard } from 'src/auth/local-auth.guard';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { JwtAuthGuard } from 'src/common/guards/jwt-access.guard';
 
 
 @Controller('users')
@@ -24,7 +24,7 @@ export class UsersController {
     @Post('signup')
     async create(@Body() createUserDto: CreateUserDto) { 
         // const user = await this.authService.signup(createUserDto);
-        return this.authService.signup(createUserDto); 
+        return this.authService.signup(createUserDto);  
     }
 
     @Get('refresh')
