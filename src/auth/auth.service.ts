@@ -25,7 +25,7 @@ export class AuthService {
     ) { }
 
     async refreshToken() {
-        return await this.mailService.sendActivationMail('mikayelyanemil19@gmail.com', '');
+        return await this.mailService.sendActivationMail('20microsoft04@gmail.com', '');
     }
 
     async generateTokens(payload) {

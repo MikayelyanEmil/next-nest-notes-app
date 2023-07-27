@@ -15,7 +15,7 @@ export class MailService {
                 pass: configService.get<string>('SMTP_PASS')
             }
         })
-    }
+    } 
 
     async sendActivationMail(to, link) {
         return this.transporter.sendMail({
