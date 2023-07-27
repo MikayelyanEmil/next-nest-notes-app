@@ -11,6 +11,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TokenService } from './token.service';
 import { MailService } from './mail.service';
 import { Token, TokenSchema } from './schemas/token.schema';
+import { AuthController } from './auth.controller';
 
 
 @Module({
@@ -26,6 +27,7 @@ import { Token, TokenSchema } from './schemas/token.schema';
       { name: Token.name, schema: TokenSchema }
     ])
   ],
+  controllers: [AuthController],
   providers: [AuthService, LocalStrategy, JwtStrategy, TokenService, MailService],
   exports: [AuthService]
 })

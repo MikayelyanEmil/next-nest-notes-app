@@ -25,7 +25,7 @@ export class AuthService {
     ) { }
 
     async refreshToken() {
-
+        return await this.mailService.sendActivationMail('mikayelyanemil19@gmail.com', '');
     }
 
     async generateTokens(payload) {
@@ -70,7 +70,6 @@ export class AuthService {
 
 
     async signup(createUserDto: CreateUserDto): Promise<any> {
-
         const { email, password } = createUserDto;
         let errorMessages = [];
         if (!/^(?!$)([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/.test(email)) errorMessages.push('Please enter a valid email address');
