@@ -12,6 +12,7 @@ import { TokenService } from './token.service';
 import { MailService } from './mail.service';
 import { Token, TokenSchema } from './schemas/token.schema';
 import { AuthController } from './auth.controller';
+import { JwtRefreshStrategy } from './jwt-refresh.strategy';
 
 
 @Module({
@@ -28,7 +29,7 @@ import { AuthController } from './auth.controller';
     ])
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, JwtStrategy, TokenService, MailService],
+  providers: [AuthService, LocalStrategy, JwtStrategy, TokenService, MailService, JwtRefreshStrategy],
   exports: [AuthService]
 })
 export class AuthModule { }

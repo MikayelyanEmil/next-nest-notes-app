@@ -49,6 +49,12 @@ export class User {
 
     @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Note' }] })
     notes: Note[];
+
+    @Prop({default: false})
+    isActivated: boolean;
+
+    @Prop()
+    activationId: string
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

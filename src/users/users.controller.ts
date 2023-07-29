@@ -27,14 +27,9 @@ export class UsersController {
         return this.authService.signup(createUserDto);  
     }
 
-    @Get('refresh')
-    async refresh() {
-        
-    }
-
-    @Get('activate')
-    async activate() {
-        
+    @Get('activate/:id')
+    async activate(@Param('id') id: string ) {
+        return this.authService.activate(id);
     }
 
     @Get(':id')

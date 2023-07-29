@@ -11,6 +11,7 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { MailService } from './mail.service';
 import { Token, TokenModel } from './schemas/token.schema';
+import { PayloadDto } from './dto/payload.dto';
 
 
 @Injectable()
@@ -24,8 +25,16 @@ export class AuthService {
         @InjectModel(Token.name) private tokenModel: Model<TokenModel>
     ) { }
 
-    async refreshToken() {
-        return await this.mailService.sendActivationMail('20microsoft04@gmail.com', '');
+    async refreshToken(payload, refresh_token) {
+        // await this.generateTokens()
+        return {
+            ...payload,
+            refresh_token
+        }
+    }
+
+    async activate(activationId) {
+        await this.userModel.updateOne({ activationId }, { isActivated: true });
     }
 
     async generateTokens(payload) {
@@ -36,7 +45,7 @@ export class AuthService {
             }),
             this.jwtService.signAsync(payload, {
                 secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
-                expiresIn: this.configService.get<string>('JWT_REFRESH_EXPIRY') 
+                expiresIn: this.configService.get<string>('JWT_REFRESH_EXPIRY')
             })
         ]);
         return {
@@ -46,7 +55,7 @@ export class AuthService {
     }
 
     async saveRefreshToken(userId, refresh_token): Promise<Token> {
-        return this.tokenModel.findOneAndUpdate({userId}, { refresh_token }, {upsert: true});
+        return this.tokenModel.findOneAndUpdate({ userId }, { refresh_token }, { upsert: true });
     }
 
     async validateUser(email, password): Promise<any> {
@@ -81,15 +90,15 @@ export class AuthService {
 
         let user;
         try {
-            user = await this.usersService.create({...createUserDto, password: hash});
+            user = await this.usersService.create({ ...createUserDto, password: hash, activationId });
         } catch (error) {
             if (error.code === 11000) throw new BadRequestException('Account with that email already exists');
         }
 
-        await this.mailService.sendActivationMail(email, `$`);
+        await this.mailService.sendActivationMail(email, `${this.configService.get<string>("BACKEND_URL")}/users/activate/${activationId}`);
         const payload = { name: user.name, sub: user.email };
         const tokens = await this.generateTokens(payload);
-        await this.saveRefreshToken(user.id, tokens.refresh_token);
+        await this.saveRefreshToken(user.id, tokens.refresh_token); 
         return {
             ...tokens,
             user: payload.name

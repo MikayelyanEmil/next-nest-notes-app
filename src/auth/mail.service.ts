@@ -21,7 +21,15 @@ export class MailService {
         return this.transporter.sendMail({
             from: this.configService.get<string>('SMTP_USER'),
             to,
-            subject: 'Account activation'
+            subject: `Account activation for ${this.configService.get<string>('FRONTEND_URL')}`,
+            text: '',
+            html: 
+                `
+                    <div>
+                        <h1>For activation follow the link: </h1>
+                        <a href="${link}">${link}</a>
+                    </div>
+                `
         })
     }
 }
