@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
@@ -26,16 +26,21 @@ export class AuthService {
     ) { }
 
     async refreshToken(payload, refresh_token) {
-        // await this.generateTokens()
-        return {
-            ...payload,
-            refresh_token
-        }
-    }
+        const user = await this.usersService.getByEmail(payload.sub);
+        if (!user) throw new ForbiddenException('User does not exist.')
+        const token = await this.tokenModel.findOne({userId: user.id});
+        if (!token) throw new ForbiddenException('Refresh token was not found for the user.');
 
-    async activate(activationId) {
-        await this.userModel.updateOne({ activationId }, { isActivated: true });
-    }
+        const tokensMatch = await bcrypt.compare(refresh_token, token.refresh_token);
+        if (!tokensMatch) throw new ForbiddenException('Invalid refresh token.');
+
+        const tokens = await this.generateTokens(payload);
+        await this.saveRefreshToken;
+        return {
+            ...tokens,
+            user: payload.name
+        }
+    } 
 
     async generateTokens(payload) {
         const [access_token, refresh_token] = await Promise.all([
@@ -55,7 +60,7 @@ export class AuthService {
     }
 
     async saveRefreshToken(userId, refresh_token): Promise<Token> {
-        return this.tokenModel.findOneAndUpdate({ userId }, { refresh_token }, { upsert: true });
+        return this.tokenModel.findOneAndUpdate({ userId }, { refresh_token: await bcrypt.hash(refresh_token, 10) }, { upsert: true });
     }
 
     async validateUser(email, password): Promise<any> {
@@ -69,10 +74,9 @@ export class AuthService {
 
     async login(user: CreateUserDto) {
         const payload = { name: user.name, sub: user.email };
-        const { access_token, refresh_token } = await this.generateTokens(payload);
+        const tokens = await this.generateTokens(payload);
         return {
-            access_token,
-            refresh_token,
+            ...tokens,
             user: payload.name
         }
     }
@@ -103,6 +107,11 @@ export class AuthService {
             ...tokens,
             user: payload.name
         }
+    }
+
+
+    async test() {
+        
     }
 }
 

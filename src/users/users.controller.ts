@@ -29,7 +29,7 @@ export class UsersController {
 
     @Get('activate/:id')
     async activate(@Param('id') id: string ) {
-        return this.authService.activate(id);
+        return this.usersService.activate(id);
     }
 
     @Get(':id')

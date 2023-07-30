@@ -16,25 +16,26 @@ export class AuthController {
     const { access_token, refresh_token, user } = await this.authService.signup(createUserDto);
     res.cookie('refreshToken', refresh_token, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true});
     res.status(200).json({access_token, user});
-    // return {
-    //   access_token, refresh_token, user
-    // }
   } 
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Request() req) {
-    return this.authService.login(req.user);
+  async login(@Request() req, @Response() res) {
+    const { access_token, refresh_token, user } = await this.authService.login(req.user);
+    res.cookie('refreshToken', refresh_token, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true});
+    res.status(200).json({access_token, user});
   }
 
   @UseGuards(JwtRefreshGuard)
   @Post('refresh')
-  async refreshToken(@Request() req) {
-    return await this.authService.refreshToken(req.user.payload, req.user.refresh_token);
+  async refreshToken(@Request() req, @Response() res) {
+    const {access_token, refresh_token, user} = await this.authService.refreshToken(req.user.payload, req.user.refresh_token);
+    res.cookie('refreshToken', refresh_token, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true});
+    res.status(200).json({access_token, user}); 
   }
 
   @Post('test') 
   async test(@Body() paylod: PayloadDto) {
-    console.log(paylod);
+    return this.authService.test();
   }
 }
