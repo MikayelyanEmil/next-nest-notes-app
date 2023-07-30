@@ -1,35 +1,20 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Redirect, Res, Request, UseGuards, Response, BadRequestException } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersService } from './users.service';
-import { AuthGuard } from '@nestjs/passport';
-import { AuthService } from 'src/auth/auth.service';
-import { LocalAuthGuard } from 'src/common/guards/local-auth.guard';
-import { JwtAuthGuard } from 'src/common/guards/jwt-access.guard';
+import { ConfigService } from '@nestjs/config';
 
 
 @Controller('users')
 export class UsersController {
     constructor(
         private readonly usersService: UsersService,
-        private readonly authService: AuthService
+        private configService: ConfigService
     ) { }
 
-    @UseGuards(LocalAuthGuard)
-    @Post('login') 
-    async login(@Request() req) {
-        return this.authService.login(req.user);
-    }
- 
-    @Post('signup')
-    async create(@Body() createUserDto: CreateUserDto) { 
-        // const user = await this.authService.signup(createUserDto);
-        return this.authService.signup(createUserDto);  
-    }
-
     @Get('activate/:id')
-    async activate(@Param('id') id: string ) {
-        return this.usersService.activate(id);
+    async activate(@Param('id') id: string, @Response() res) {
+        await this.usersService.activate(id);
+        res.redirect(this.configService.get<string>('FRONTEND_URL'));
     }
 
     @Get(':id')

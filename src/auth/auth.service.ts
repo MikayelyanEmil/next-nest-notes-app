@@ -4,14 +4,12 @@ import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
-// import { User } from 'src/users/schemas/users.schema';
 import { v4 as uuidv4 } from 'uuid';
 import { User, UserModel } from 'src/users/schemas/users.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { MailService } from './mail.service';
 import { Token, TokenModel } from './schemas/token.schema';
-import { PayloadDto } from './dto/payload.dto';
 
 
 @Injectable()

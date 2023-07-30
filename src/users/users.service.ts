@@ -1,15 +1,9 @@
-import * as bcrypt from 'bcrypt';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, ObjectId } from 'mongoose';
+import { Model } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Note, NoteModel, User, UserModel } from './schemas/users.schema';
-import { v4 as uuidv4 } from 'uuid';
-import { MailService } from '../auth/mail.service';
-
-
-
+import { User, UserModel } from './schemas/users.schema';
 
  
 @Injectable()
