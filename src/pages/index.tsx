@@ -35,7 +35,7 @@ const Home: React.FC<IHome> = ({ isAuthorized, setIsAuthorized, loading, setLoad
 
     useEffect(() => {
         fetcNotes(setBody, setIsAuthorized, setLoading, setUser);
-    });
+    }, []);
 
     return (
         <div className={styles.container}>
