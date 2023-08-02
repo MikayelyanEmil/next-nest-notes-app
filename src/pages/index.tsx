@@ -8,14 +8,16 @@ import Signup from '@/components/SignupForm/Signup'
 import Image from 'next/image'
 import loadingImage from '@/icons/Infinity-1s-200px.svg'
 import closeIcon from '@/icons/close.svg'
+import { fetcNotes } from '@/handlers/fetchNotes';
+import { saveNote } from '@/handlers/saveNote'
 
 interface IHome {
     isAuthorized: boolean,
-    setIsAuthorized: any, 
-    loading: boolean, 
-    setLoading: any, 
-    signup: boolean, 
-    setUser: any, 
+    setIsAuthorized: any,
+    loading: boolean,
+    setLoading: any,
+    signup: boolean,
+    setUser: any,
     body: any[],
     setBody: any
 }
@@ -32,63 +34,8 @@ const Home: React.FC<IHome> = ({ isAuthorized, setIsAuthorized, loading, setLoad
     const [error, setError] = useState('');
 
     useEffect(() => {
-        const fetcNotes = async () => {
-            const access_token = document.cookie.split(';').filter((c) => c.includes('access_token'))[0]?.split('=')[1];
-            try {
-                const response = await fetch(`${process.env.BACKEND_URL}/notes`, {
-                    method: 'Get',
-                    headers: {
-                        'Authorization': 'bearer ' + access_token
-                    }
-                });
-                if (!response.ok) {
-                    setBody([]);
-                    setIsAuthorized(false);
-                    return setLoading(false);
-                }
-                
-                const { user, notes } = await response.json();
-                await setBody(notes.reverse());
-                await setUser(user);
-                await setIsAuthorized(true);
-                await setLoading(false);
-            } catch (error) {
-                setLoading(true);
-            }
-        }
-        fetcNotes()
+        fetcNotes(setBody, setIsAuthorized, setLoading, setUser);
     });
-
-    const handleSave = async (event: any) => {
-        event.preventDefault();
-        try {
-            const body: NoteBody = { title: event.target.title.value, description: event.target.description.value }
-            const access_token = document.cookie.split(';').filter((c) => c.includes('access_token'))[0]?.split('=')[1];
-            let endpoint;
-            if (noteId) {
-                body.id = noteId;
-                endpoint = 'update';
-            }
-            else endpoint = 'create';
-            const response = await fetch(`${process.env.BACKEND_URL}/notes/${endpoint}`, {
-                method: 'Post',
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": "bearer " + access_token
-                },
-                body: JSON.stringify(body),
-                mode: 'cors'
-            });
-            if (!response.ok) {
-                setBody([]);
-                return setIsAuthorized(false);
-            }
-            await response.json();
-            await setNoteId('');
-        } catch (error) {
-            setLoading(true);
-        }
-    }
 
     return (
         <div className={styles.container}>
@@ -97,7 +44,7 @@ const Home: React.FC<IHome> = ({ isAuthorized, setIsAuthorized, loading, setLoad
                 <>
                     <div className={styles.seperator}>
                         {showCreateForm ?
-                            <form method='post' onSubmit={handleSave} className={styles.createNoteForm}>
+                            <form method='post' onSubmit={(e) => saveNote(e, noteId, setNoteId, setBody, setIsAuthorized, setLoading)} className={styles.createNoteForm}>
                                 <button className={styles.closeFormBtn} onClick={() => setShowCreateForm(false)}>
                                     <Image src={closeIcon} width={18} height={18} alt='close' />
                                 </button>
