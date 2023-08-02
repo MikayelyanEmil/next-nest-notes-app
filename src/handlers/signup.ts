@@ -31,9 +31,6 @@ export const submit = async (event: any, setIsAuthorized: any, showErrorPopup: a
         const response = await api.post<AuthResponse>('users/signup', {name: body.name, email: body.email, password: body.password});
         console.log(response.data);
         
-        // if (!response.ok) {
-        //     return showErrorPopup((await response.json()).message);
-        // }
         const { access_token, user } = await response.data
         setUser(user)
         document.cookie = "access_token=" + access_token;
