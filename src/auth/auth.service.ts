@@ -67,7 +67,7 @@ export class AuthService {
             return await bcrypt.compare(password, user.password) ? user : false;
         } catch (error) {
             return null;
-        }
+        } 
     }
 
     async login(user: CreateUserDto) {
