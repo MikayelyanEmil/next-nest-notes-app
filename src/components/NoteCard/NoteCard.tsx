@@ -4,6 +4,7 @@ import { Button } from '../Button/Button'
 import Image from 'next/image'
 import redDeleteIcon from '../../icons/delete-svgrepo-com.svg'
 import editIcon from '../../icons/edit-svgrepo-com.svg'
+import api from '@/http'
 
 interface INoteCard {
   title: string,
@@ -28,23 +29,14 @@ export const NoteCard: React.FC<INoteCard> = ({ title, description, id, show, se
 
   const handleDelete = async (id: any) => {
     try {
-      const access_token = document.cookie.split(';').filter((c) => c.includes('access_token'))[0]?.split('=')[1];
-      const response = await fetch(`${process.env.BACKEND_URL}/notes/delete`, {
-        method: 'Post',
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "bearer " + access_token
-        },
-        body: JSON.stringify({ id }),
-        mode: 'cors'
-      });
-      if (!response.ok) {
-        return setIsAuthorized(false);
+      await api.post('notes/delete', { id })
+    } catch (error: any) {
+      if (error.response.status == 403) {
+
+      } else {
+        setIsAuthorized(false);
       }
-    } catch (error) {
-
     }
-
   }
 
   return (
