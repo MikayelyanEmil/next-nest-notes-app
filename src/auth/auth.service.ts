@@ -10,6 +10,7 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { MailService } from './mail.service';
 import { Token, TokenModel } from './schemas/token.schema';
+import { LoginDto } from './dto/login.dto';
 
 
 @Injectable()
@@ -26,7 +27,7 @@ export class AuthService {
     async refreshToken(payload, refresh_token) {
         const user = await this.usersService.getByEmail(payload.sub);
         if (!user) throw new ForbiddenException('User does not exist.')
-        const token = await this.tokenModel.findOne({userId: user.id});
+        const token = await this.tokenModel.findOne({ userId: user.id });
         if (!token) throw new ForbiddenException('Refresh token was not found for the user.');
 
         const tokensMatch = await bcrypt.compare(refresh_token, token.refresh_token);
@@ -38,7 +39,7 @@ export class AuthService {
             ...tokens,
             user: payload.name
         }
-    } 
+    }
 
     async generateTokens(payload) {
         const [access_token, refresh_token] = await Promise.all([
@@ -67,12 +68,13 @@ export class AuthService {
             return await bcrypt.compare(password, user.password) ? user : false;
         } catch (error) {
             return null;
-        } 
+        }
     }
 
-    async login(user: CreateUserDto) {
-        const payload = { name: user.name, sub: user.email };
+    async login(user: LoginDto) {
+        const payload = { id: user.id, name: user.name, sub: user.email };
         const tokens = await this.generateTokens(payload);
+        await this.saveRefreshToken(user.id, tokens.refresh_token);
         return {
             ...tokens,
             user: payload.name
@@ -98,18 +100,17 @@ export class AuthService {
         }
 
         await this.mailService.sendActivationMail(email, `${this.configService.get<string>("BACKEND_URL")}/users/activate/${activationId}`);
-        const payload = { name: user.name, sub: user.email };
+        const payload = { id: user.id, name: user.name, sub: user.email };
         const tokens = await this.generateTokens(payload);
-        await this.saveRefreshToken(user.id, tokens.refresh_token); 
+        await this.saveRefreshToken(user.id, tokens.refresh_token);
         return {
             ...tokens,
             user: payload.name
         }
     }
 
-
-    async test() {
-        
+    async logout(userId, refresh_token): Promise<Token> {
+        return await this.tokenModel.findOneAndDelete({ userId }, { returnDocument: 'after' });
     }
 }
 
