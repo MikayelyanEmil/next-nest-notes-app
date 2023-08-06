@@ -12,14 +12,16 @@ interface ILayout {
   showSignup: any, 
   user: string, 
   setUser: any, 
-  setBody: any
+  setBody: any,
+  lever: boolean,
+  runFetch: any
 }
 
-const Layout: React.FC<ILayout> = ({ children, isAuthorized, setIsAuthorized, loading, setLoading, signup, showSignup, user, setUser, setBody }) => {
+const Layout: React.FC<ILayout> = ({ children, isAuthorized, setIsAuthorized, loading, setLoading, signup, showSignup, user, setUser, setBody, lever, runFetch }) => {
   return (
     <>
       <header>
-        <Navbar isAuthorized={isAuthorized} setIsAuthorized={setIsAuthorized} loading={loading} setLoading={setLoading} signup={signup} showSignup={showSignup} user={user} setUser={setUser} setBody={setBody} />
+        <Navbar isAuthorized={isAuthorized} setIsAuthorized={setIsAuthorized} loading={loading} setLoading={setLoading} signup={signup} showSignup={showSignup} user={user} setUser={setUser} setBody={setBody} lever={lever} runFetch={runFetch} />
       </header>
       <main className={styles.main}>
         {children}

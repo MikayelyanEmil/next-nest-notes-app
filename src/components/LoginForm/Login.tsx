@@ -7,10 +7,12 @@ import Error from '../ErrorMessage/Error'
 
 interface ILogin {
     setIsAuthorized: any,
-    setUser: any
+    setUser: any,
+    lever: boolean,
+    runFetch: any
 }
 
-const Login: React.FC<ILogin> = ({ setIsAuthorized, setUser }) => {
+const Login: React.FC<ILogin> = ({ setIsAuthorized, setUser, lever, runFetch }) => {
     const [errorMessage, setErrorMessage] = useState("");
     const showErrorPopup = (message: any, duration = 1500) => {
         setErrorMessage(message);
@@ -28,7 +30,7 @@ const Login: React.FC<ILogin> = ({ setIsAuthorized, setUser }) => {
             {errorMessage && (
                 <Error message={errorMessage} onClose={hideErrorPopup} />
             )}
-            <form onSubmit={(e) => submit(e, setIsAuthorized, showErrorPopup, setUser)} method='Post' className={styles.form}>
+            <form onSubmit={(e) => submit(e, setIsAuthorized, showErrorPopup, setUser, lever, runFetch)} method='Post' className={styles.form}>
                 <Input text={'Email'} type={'email'} name={'email'} />
                 <br />
                 <Input text={'Password'} type={'password'} name={'password'} />

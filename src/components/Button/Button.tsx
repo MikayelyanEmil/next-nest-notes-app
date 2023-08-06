@@ -4,7 +4,7 @@ import styles from './Button.module.css'
 interface IButton {
   text: string,
   variant: 'primary' | 'secondary',
-  onClick?: () => void,
+  onClick?: any,
   type?: 'submit',
   color?: string
 }
