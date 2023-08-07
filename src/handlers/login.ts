@@ -3,7 +3,7 @@ import { AxiosError } from 'axios'
 import { AuthResponse } from "@/interfaces/AuthResponse";
 import { AxiosResponse } from "axios";
 
-export const submit = async (event: any, setIsAuthorized: any, showErrorPopup: any, setUser: any, lever: boolean, runFetch: any) => {
+export const submit = async (event: any, setIsAuthorized: any, showErrorPopup: any, setUser: any, lever: boolean, runFetch: any, setError: any) => {
     event.preventDefault();
     const body = { email: event.target.email.value, password: event.target.password.value }
     try {
@@ -18,7 +18,7 @@ export const submit = async (event: any, setIsAuthorized: any, showErrorPopup: a
             showErrorPopup(error.response.data.message);
         }
         else {
-            showErrorPopup('Internal Server Error.');
+            setError('Internal Server Error.');
         }
     }
 }

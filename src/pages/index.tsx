@@ -68,15 +68,15 @@ const Home: React.FC<IHome> = ({ isAuthorized, setIsAuthorized, loading, setLoad
                             }
                         </div>
                         <div className={styles.seperator}>
-                            {body.map((n: any) => <NoteCard key={n['_id']} title={n.title} description={n.description} id={n['_id']} show={setShowCreateForm} setId={setNoteId} setIsAuthorized={setIsAuthorized} lever={lever} runFetch={runFetch} />)}
+                            {body.map((n: any) => <NoteCard key={n['_id']} title={n.title} description={n.description} id={n['_id']} show={setShowCreateForm} setId={setNoteId} setIsAuthorized={setIsAuthorized} lever={lever} runFetch={runFetch} setUser={setUser} setBody={setBody} setError={setError} />)}
                         </div>
                     </>
                     :
                     <div className={styles.seperator}>
                         <center>
                             {signup ?
-                                <Signup setIsAuthorized={setIsAuthorized} setUser={setUser} lever={lever} runFetch={runFetch} /> :
-                                <Login setIsAuthorized={setIsAuthorized} setUser={setUser} lever={lever} runFetch={runFetch} />
+                                <Signup setIsAuthorized={setIsAuthorized} setUser={setUser} lever={lever} runFetch={runFetch} setError={setError} /> :
+                                <Login setIsAuthorized={setIsAuthorized} setUser={setUser} lever={lever} runFetch={runFetch} setError={setError} />
                             }
                         </center>
                     </div>

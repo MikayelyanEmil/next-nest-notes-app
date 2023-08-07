@@ -2,7 +2,7 @@ import api from "@/http";
 import { AxiosError } from "axios";
 import { NoteBody } from "@/interfaces/NoteBody";
 
-export const saveNote = async (event: any, noteId: string, setNoteId: any, setBody: any, setIsAuthorized: any, setLoading: any, lever: boolean, runFetch: any, setError: any) => {
+export const saveNote = async (event: any, noteId: string, setNoteId: any, setBody: any, setIsAuthorized: any, setLoading: any, lever: boolean, runFetch: any, setError: any, setUser: any) => {
     event.preventDefault();
     try {
         const body: NoteBody = { title: event.target.title.value, description: event.target.description.value }
@@ -19,8 +19,10 @@ export const saveNote = async (event: any, noteId: string, setNoteId: any, setBo
         if (error.response?.status == 403) {
             setError(error.response.data.message)
         } else {
+            setUser('');
             setBody([]);
-            setIsAuthorized(false);
+            setIsAuthorized(false); 
+            if (!error.response) setError('Internal Server Error');
         }
     }
 }

@@ -11,6 +11,7 @@ export default function App({ Component, pageProps }: AppProps) {
   const [loading, setLoading] = useState(true);
   const [signup, showSignup] = useState(true);
   const [user, setUser] = useState('');
+  const [error, setError] = useState('');
   pageProps.lever = lever;
   pageProps.runFetch = runFetch;
   pageProps.isAuthorized = isAuthorized;
@@ -23,7 +24,9 @@ export default function App({ Component, pageProps }: AppProps) {
   pageProps.setUser = setUser;
   pageProps.body = body;
   pageProps.setBody = setBody;
-  return <Layout isAuthorized={isAuthorized} setIsAuthorized={setIsAuthorized} loading={loading} setLoading={setLoading} signup={signup} showSignup={showSignup} user={user} setUser={setUser} setBody={setBody} lever={lever} runFetch={runFetch}>
+  pageProps.error = error;
+  pageProps.setError = setError;
+  return <Layout isAuthorized={isAuthorized} setIsAuthorized={setIsAuthorized} loading={loading} setLoading={setLoading} signup={signup} showSignup={showSignup} user={user} setUser={setUser} setBody={setBody} lever={lever} runFetch={runFetch} setError={setError}>
     <Component {...pageProps} />
   </Layout>
 

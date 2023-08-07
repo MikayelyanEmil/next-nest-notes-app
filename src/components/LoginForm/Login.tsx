@@ -9,10 +9,11 @@ interface ILogin {
     setIsAuthorized: any,
     setUser: any,
     lever: boolean,
-    runFetch: any
+    runFetch: any,
+    setError: any
 }
 
-const Login: React.FC<ILogin> = ({ setIsAuthorized, setUser, lever, runFetch }) => {
+const Login: React.FC<ILogin> = ({ setIsAuthorized, setUser, lever, runFetch, setError }) => {
     const [errorMessage, setErrorMessage] = useState("");
     const showErrorPopup = (message: any, duration = 1500) => {
         setErrorMessage(message);
@@ -30,7 +31,7 @@ const Login: React.FC<ILogin> = ({ setIsAuthorized, setUser, lever, runFetch }) 
             {errorMessage && (
                 <Error message={errorMessage} onClose={hideErrorPopup} />
             )}
-            <form onSubmit={(e) => submit(e, setIsAuthorized, showErrorPopup, setUser, lever, runFetch)} method='Post' className={styles.form}>
+            <form onSubmit={(e) => submit(e, setIsAuthorized, showErrorPopup, setUser, lever, runFetch, setError)} method='Post' className={styles.form}>
                 <Input text={'Email'} type={'email'} name={'email'} />
                 <br />
                 <Input text={'Password'} type={'password'} name={'password'} />

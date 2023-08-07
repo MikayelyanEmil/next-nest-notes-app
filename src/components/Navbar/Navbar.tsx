@@ -16,10 +16,11 @@ interface INavbar {
     setUser: any, 
     setBody: any,
     lever: boolean,
-    runFetch: any
+    runFetch: any,
+    setError: any
 }
 
-const Navbar: React.FC<INavbar> = ({ isAuthorized, setIsAuthorized, loading, setLoading, signup, showSignup, user, setUser, setBody, lever, runFetch }) => {
+const Navbar: React.FC<INavbar> = ({ isAuthorized, setIsAuthorized, loading, setLoading, signup, showSignup, user, setUser, setBody, lever, runFetch, setError }) => {
     const router = useRouter();
     // const logOut = async () => {
     //     await setBody([]);
@@ -29,13 +30,17 @@ const Navbar: React.FC<INavbar> = ({ isAuthorized, setIsAuthorized, loading, set
     //     setIsAuthorized(false);
     //     runFetch(!lever);
     // }
+    const showSignupForm = (yes: boolean) => {
+        showSignup(yes);
+        runFetch(!lever);
+    }
 
 
     return (
         <nav className={styles.navbar}>
-            {loading ? <></> : isAuthorized ? <><h1 className={styles.title}>Welcome, {user} !</h1><Button text='Log Out' variant='secondary' onClick={() => logout(setLoading, setBody, setUser, setIsAuthorized)} /></>
-            : <> <h1 className={styles.title}>The Web Notes</h1> {signup ? <Button text='Log In' variant='secondary' onClick={() => showSignup(false)} /> : 
-              <Button text='Sign Up' variant='secondary' onClick={() => showSignup(true)} />}
+            {loading ? <></> : isAuthorized ? <><h1 className={styles.title}>Welcome, {user} !</h1><Button text='Log Out' variant='secondary' onClick={() => logout(setLoading, setBody, setUser, setIsAuthorized, setError)} /></>
+            : <> <h1 className={styles.title}>The Web Notes</h1> {signup ? <Button text='Log In' variant='secondary' onClick={() => showSignupForm(false)} /> : 
+              <Button text='Sign Up' variant='secondary' onClick={() => showSignupForm(true)} />}
               </>
             }
         </nav>

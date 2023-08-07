@@ -1,14 +1,13 @@
 import api from "@/http";
 
-export const handleDelete = async (id: any, setIsAuthorized: any, lever: boolean, runFetch: any) => {
-    try {
-      await api.post('notes/delete', { id })
-      runFetch(!lever);
-    } catch (error: any) {
-      if (error.response.status == 403) {
-
-      } else {
-        setIsAuthorized(false);
-      }
-    }
+export const handleDelete = async (id: any, setIsAuthorized: any, lever: boolean, runFetch: any, setUser: any, setBody: any, setError: any) => {
+  try {
+    await api.post('notes/delete', { id })
+    runFetch(!lever);
+  } catch (error: any) {
+    setUser('');
+    setBody([]);
+    setIsAuthorized(false);
+    if (!error.response) setError('Internal Server Error');
   }
+}
