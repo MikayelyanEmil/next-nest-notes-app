@@ -1,11 +1,10 @@
-import api from "@/http";
+import {api} from "@/http";
 import { NotesResponse } from "@/interfaces/NotesResponse";
 import { AxiosError } from "axios";
 
 
-export const fetcNotes = async (setBody: any, setIsAuthorized: any, setLoading: any, setUser: any, setError: any) => {
+export const fetcNotes = async (setBody: any, setIsAuthorized: any, setLoading: any, setUser: any, setError: any, showErrorPopup: any) => {
     try {
-        setError('');
         const response = await api.get<NotesResponse>('notes');
         const { user, notes } = response.data;
         setBody(notes.reverse());
@@ -14,7 +13,7 @@ export const fetcNotes = async (setBody: any, setIsAuthorized: any, setLoading: 
     } catch (error: any) {
         if (error.response?.status == 403) { 
             setIsAuthorized(true);
-            setError(error.response.data.message)
+            showErrorPopup(error.response.data.message)
         }
         else {
             setUser('');

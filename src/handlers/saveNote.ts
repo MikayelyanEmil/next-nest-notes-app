@@ -1,8 +1,8 @@
-import api from "@/http";
+import {api} from "@/http";
 import { AxiosError } from "axios";
 import { NoteBody } from "@/interfaces/NoteBody";
 
-export const saveNote = async (event: any, noteId: string, setNoteId: any, setBody: any, setIsAuthorized: any, setLoading: any, lever: boolean, runFetch: any, setError: any, setUser: any) => {
+export const saveNote = async (event: any, noteId: string, setNoteId: any, setBody: any, setIsAuthorized: any, setLoading: any, lever: boolean, runFetch: any, setError: any, setUser: any, showErrorPopup: any) => {
     event.preventDefault();
     try {
         const body: NoteBody = { title: event.target.title.value, description: event.target.description.value }
@@ -17,12 +17,13 @@ export const saveNote = async (event: any, noteId: string, setNoteId: any, setBo
         runFetch(!lever);
     } catch (error: any) {
         if (error.response?.status == 403) {
-            setError(error.response.data.message)
+            showErrorPopup(error.response.data.message)
         } else {
             setUser('');
             setBody([]);
             setIsAuthorized(false); 
             if (!error.response) setError('Internal Server Error');
+            if (error.response.status == 401) showErrorPopup('Your session has expired. Please Login');
         }
     }
 }

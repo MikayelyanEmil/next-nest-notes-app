@@ -1,4 +1,4 @@
-import api from "@/http";
+import {api} from "@/http";
 import { AxiosError } from 'axios'
 import { AuthResponse } from "@/interfaces/AuthResponse";
 import { AxiosResponse } from "axios";
@@ -8,9 +8,9 @@ export const submit = async (event: any, setIsAuthorized: any, showErrorPopup: a
     const body = { email: event.target.email.value, password: event.target.password.value }
     try {
         const response = await api.post<AuthResponse>('auth/login', body);
-        const { access_token, user } = await response.data;
-        setUser(user);
+        const { access_token, name } = await response.data;
         localStorage.setItem('token', access_token);
+        setUser(name);
         runFetch(!lever);
         setIsAuthorized(true);
     } catch (error: any) {
@@ -18,7 +18,7 @@ export const submit = async (event: any, setIsAuthorized: any, showErrorPopup: a
             showErrorPopup(error.response.data.message);
         }
         else {
-            setError('Internal Server Error.');
+            setError('Internal Server Error');
         }
     }
 }

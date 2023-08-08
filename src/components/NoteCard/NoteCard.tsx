@@ -16,10 +16,11 @@ interface INoteCard {
   runFetch: any,
   setUser: any,
   setBody: any,
-  setError: any
+  setError: any,
+  showErrorPopup: any
 }
 
-export const NoteCard: React.FC<INoteCard> = ({ title, description, id, show, setId, setIsAuthorized, lever, runFetch, setUser, setBody, setError }) => {
+export const NoteCard: React.FC<INoteCard> = ({ title, description, id, show, setId, setIsAuthorized, lever, runFetch, setUser, setBody, setError, showErrorPopup }) => {
   const handleEdit = async (id: any) => {
     // try this  
     await show(true);
@@ -36,7 +37,7 @@ export const NoteCard: React.FC<INoteCard> = ({ title, description, id, show, se
       <div className={styles.top}>
         <span className={styles.title}>{title}</span>
         <button className={styles.editBtn} onClick={() => handleEdit(id)}><Image src={editIcon} height={18} width={18} alt='Edit' /></button>
-        <button className={styles.deleteBtn} onClick={() => handleDelete(id, setIsAuthorized, lever, runFetch, setUser, setBody, setError)}> <Image src={redDeleteIcon} height={18} width={18} alt='Delete' /></button>
+        <button className={styles.deleteBtn} onClick={() => handleDelete(id, setIsAuthorized, lever, runFetch, setUser, setBody, setError, showErrorPopup)}> <Image src={redDeleteIcon} height={18} width={18} alt='Delete' /></button>
       </div>
       <div className={styles.description}>{description}</div>
     </div>

@@ -4,7 +4,6 @@ import { useRouter } from 'next/router'
 import { Button } from '../Button/Button'
 import { logout } from '@/handlers/logout'
 
-
 interface INavbar {
     isAuthorized: boolean,
     setIsAuthorized: any, 
@@ -22,25 +21,12 @@ interface INavbar {
 
 const Navbar: React.FC<INavbar> = ({ isAuthorized, setIsAuthorized, loading, setLoading, signup, showSignup, user, setUser, setBody, lever, runFetch, setError }) => {
     const router = useRouter();
-    // const logOut = async () => {
-    //     await setBody([]);
-    //     setLoading(true);
-    //     document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    //     setUser(''); 
-    //     setIsAuthorized(false);
-    //     runFetch(!lever);
-    // }
-    const showSignupForm = (yes: boolean) => {
-        showSignup(yes);
-        runFetch(!lever);
-    }
-
-
+ 
     return (
         <nav className={styles.navbar}>
             {loading ? <></> : isAuthorized ? <><h1 className={styles.title}>Welcome, {user} !</h1><Button text='Log Out' variant='secondary' onClick={() => logout(setLoading, setBody, setUser, setIsAuthorized, setError)} /></>
-            : <> <h1 className={styles.title}>The Web Notes</h1> {signup ? <Button text='Log In' variant='secondary' onClick={() => showSignupForm(false)} /> : 
-              <Button text='Sign Up' variant='secondary' onClick={() => showSignupForm(true)} />}
+            : <> <h1 className={styles.title}>The Web Notes</h1> {signup ? <Button text='Log In' variant='secondary' onClick={() => showSignup(false)} /> : 
+              <Button text='Sign Up' variant='secondary' onClick={() => showSignup(true)} />}
               </>
             }
         </nav>

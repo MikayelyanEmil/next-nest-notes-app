@@ -86,6 +86,7 @@
 
 
 .error_card {
+    width: fit-content;
     background-color: #f44336;
     color: #fff;
     border: 1px solid #e53935;
