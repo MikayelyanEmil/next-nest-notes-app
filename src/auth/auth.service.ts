@@ -34,7 +34,7 @@ export class AuthService {
         if (!tokensMatch) throw new ForbiddenException('Invalid refresh token.');
 
         const tokens = await this.generateTokens(payload);
-        await this.saveRefreshToken;
+        await this.saveRefreshToken(user.id, tokens.refresh_token);
         return {
             ...tokens,
             user: {

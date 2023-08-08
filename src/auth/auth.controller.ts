@@ -37,7 +37,6 @@ export class AuthController {
     res.status(200).json({ access_token, name: user.name });
   }
 
-  // @UseGuards(JwtAuthGuard)
   @Post('logout')
   async logout(@Request() req, @Res() res: Response) {
     let token = await this.authService.logout(req.cookies.user_id, req.cookies.refresh_token);
