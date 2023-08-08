@@ -37,7 +37,10 @@ export class AuthService {
         await this.saveRefreshToken;
         return {
             ...tokens,
-            user: payload.name
+            user: {
+                name: payload.name,
+                id: user.id
+            }
         }
     }
 
@@ -77,7 +80,10 @@ export class AuthService {
         await this.saveRefreshToken(user.id, tokens.refresh_token);
         return {
             ...tokens,
-            user: payload.name
+            user: {
+                name: payload.name,
+                id: user.id
+            }
         }
     }
 
@@ -105,12 +111,15 @@ export class AuthService {
         await this.saveRefreshToken(user.id, tokens.refresh_token);
         return {
             ...tokens,
-            user: payload.name
+            user: {
+                name: payload.name,
+                id: user.id
+            }
         }
     }
 
     async logout(userId, refresh_token): Promise<Token> {
-        return await this.tokenModel.findOneAndDelete({ userId }, { returnDocument: 'after' });
+        return await this.tokenModel.findOneAndDelete({ userId });
     }
 }
 
