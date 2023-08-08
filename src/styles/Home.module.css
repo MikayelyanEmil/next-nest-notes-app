@@ -1,6 +1,6 @@
 .container {
-    min-width: 1080px;
-    padding: 60px 240px;
+    padding-top: 60px;
+    width: 600px;
 }
 
 .seperator {
@@ -11,7 +11,6 @@
     margin: 10px 0;
     border: 2px solid #ccc;
     border-radius: 10px;
-    width: 600px;
     padding: 20px;
     height: fit-content;
 }
@@ -47,7 +46,6 @@
 
 .textareaTitle,
 .textareaDescription {
-    /* overflow-y: hidden; */
     width: 100%;
     border: 2px solid #ccc;
     border-radius: 5px;
@@ -65,28 +63,13 @@
     font-size: 24px;
 }
 
-/* .textareaDescription {
-    height: 120px;
-} */
-
 .textareaTitle:focus,
 .textareaDescription:focus {
     border-color: #1c0e7b;
 }
 
-@media only screen and (max-width: 600px) {
-    .container {
-        min-width: auto;
-    }
-
-    .createNoteForm {
-        width: 350px;
-    }
-}
-
-
 .error_card {
-    width: fit-content;
+    width: 300px;
     background-color: #f44336;
     color: #fff;
     border: 1px solid #e53935;
@@ -98,4 +81,11 @@
 .error_title {
     font-size: 24px;
     margin: 0;
+}
+
+
+@media only screen and (max-width: 600px) {
+    .container{
+        width: 350px;
+    }
 }
