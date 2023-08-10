@@ -14,8 +14,8 @@ export class AuthController {
   @Post('signup')
   async create(@Body() createUserDto: CreateUserDto, @Res() res: Response) {
     const { access_token, refresh_token, user } = await this.authService.signup(createUserDto);
-    res.cookie('refresh_token', refresh_token, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
-    res.cookie('user_id', user.id, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
+    res.cookie('refresh_token', refresh_token, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true, sameSite: "none" });
+    res.cookie('user_id', user.id, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true, sameSite: "none" });
     res.status(200).json({ access_token, name: user.name });
   }
 
@@ -23,8 +23,8 @@ export class AuthController {
   @Post('login')
   async login(@Request() req, @Res() res: Response) {
     const { access_token, refresh_token, user } = await this.authService.login(req.user);
-    res.cookie('refresh_token', refresh_token, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
-    res.cookie('user_id', user.id, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
+    res.cookie('refresh_token', refresh_token, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true, sameSite: "none" });
+    res.cookie('user_id', user.id, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true, sameSite: "none" });
     res.status(200).json({ access_token, name: user.name });
   }
 
@@ -32,8 +32,8 @@ export class AuthController {
   @Post('refresh')
   async refreshToken(@Request() req, @Res() res: Response) {
     const { access_token, refresh_token, user } = await this.authService.refreshToken(req.user.payload, req.user.refresh_token);
-    res.cookie('refresh_token', refresh_token, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
-    res.cookie('user_id', user.id, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
+    res.cookie('refresh_token', refresh_token, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true, sameSite: "none" });
+    res.cookie('user_id', user.id, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true, sameSite: "none" });
     res.status(200).json({ access_token, name: user.name });
   }
 
