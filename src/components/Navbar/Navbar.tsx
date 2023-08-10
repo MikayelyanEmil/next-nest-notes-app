@@ -24,7 +24,7 @@ const Navbar: React.FC<INavbar> = ({ isAuthorized, setIsAuthorized, loading, set
  
     return (
         <nav className={styles.navbar}>
-            {loading ? <></> : isAuthorized ? <><h1 className={styles.title}>Welcome, {user} !</h1><Button text='Log Out' variant='secondary' onClick={() => logout(setLoading, setBody, setUser, setIsAuthorized, setError)} /></>
+            {loading ? <></> : isAuthorized ? <><h1 className={styles.title}>Welcome {user}</h1><Button text='Log Out' variant='secondary' onClick={() => logout(setLoading, setBody, setUser, setIsAuthorized, setError)} /></>
             : <> <h1 className={styles.title}>The Web Notes</h1> {signup ? <Button text='Log In' variant='secondary' onClick={() => showSignup(false)} /> : 
               <Button text='Sign Up' variant='secondary' onClick={() => showSignup(true)} />}
               </>
